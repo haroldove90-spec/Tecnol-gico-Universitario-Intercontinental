@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { MOCK_COURSES } from '../../constants';
 import { Course, Lesson, LessonType } from '../../types';
@@ -33,8 +32,8 @@ const LessonContent: React.FC<{ lesson: Lesson }> = ({ lesson }) => {
                     <h3 className="text-lg font-semibold mb-4">{quiz.question}</h3>
                     <div className="space-y-3">
                         {quiz.options.map((option: string, index: number) => (
-                            <label key={index} className="flex items-center p-3 border rounded-lg hover:bg-gray-100 cursor-pointer">
-                                <input type="radio" name="quizOption" className="mr-3"/>
+                            <label key={index} className="flex items-center p-3 border rounded-lg bg-gray-100 hover:bg-gray-200 cursor-pointer text-black">
+                                <input type="radio" name="quizOption" className="mr-3 accent-primary"/>
                                 {option}
                             </label>
                         ))}

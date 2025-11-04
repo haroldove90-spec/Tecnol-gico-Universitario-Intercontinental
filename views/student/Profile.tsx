@@ -51,7 +51,7 @@ const Profile: React.FC<ProfileProps> = ({ user, onUpdateUser }) => {
                                     name="name"
                                     value={formData.name}
                                     onChange={handleInputChange}
-                                    className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-lg"
+                                    className="mt-1 block w-full px-3 py-2 bg-gray-100 text-black border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-lg"
                                 />
                             </div>
                             <div className="mb-4">
@@ -62,7 +62,7 @@ const Profile: React.FC<ProfileProps> = ({ user, onUpdateUser }) => {
                                     name="email"
                                     value={formData.email}
                                     onChange={handleInputChange}
-                                    className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-lg"
+                                    className="mt-1 block w-full px-3 py-2 bg-gray-100 text-black border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-lg"
                                 />
                             </div>
                         </div>

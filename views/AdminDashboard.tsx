@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { User } from '../types';
 import Sidebar from '../components/Sidebar';
@@ -5,6 +6,7 @@ import Header from '../components/Header';
 import CoursesList from './admin/CoursesList';
 import StudentsList from './admin/StudentsList';
 import SubmissionsList from './admin/SubmissionsList';
+import DashboardHome from './admin/DashboardHome';
 
 interface AdminDashboardProps {
   user: User;
@@ -12,10 +14,11 @@ interface AdminDashboardProps {
 }
 
 const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
-  const [activeView, setActiveView] = useState('courses');
+  const [activeView, setActiveView] = useState('dashboard');
   const [isSidebarOpen, setSidebarOpen] = useState(false);
 
   const viewTitles: { [key: string]: string } = {
+    dashboard: 'Resumen General',
     courses: 'Gestión de Cursos',
     students: 'Gestión de Estudiantes',
     submissions: 'Entregas y Calificaciones',
@@ -33,6 +36,8 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
 
   const renderContent = () => {
     switch (activeView) {
+      case 'dashboard':
+        return <DashboardHome />;
       case 'courses':
         return <CoursesList />;
       case 'students':
@@ -40,7 +45,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
       case 'submissions':
         return <SubmissionsList />;
       default:
-        return <CoursesList />;
+        return <DashboardHome />;
     }
   };
 

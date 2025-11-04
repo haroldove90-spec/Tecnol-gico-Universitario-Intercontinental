@@ -88,11 +88,11 @@ const CalendarView: React.FC = () => {
                         <form onSubmit={handleAddEventSubmit}>
                             <div className="mb-4">
                                 <label htmlFor="eventTitle" className="block text-sm font-medium text-gray-700">Título del Evento</label>
-                                <input type="text" id="eventTitle" value={newEventTitle} onChange={e => setNewEventTitle(e.target.value)} className="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required/>
+                                <input type="text" id="eventTitle" value={newEventTitle} onChange={e => setNewEventTitle(e.target.value)} className="mt-1 block w-full px-3 py-2 bg-gray-100 text-black border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary" required/>
                             </div>
                             <div className="mb-6">
                                 <label htmlFor="eventDate" className="block text-sm font-medium text-gray-700">Fecha</label>
-                                <input type="date" id="eventDate" value={newEventDate} onChange={e => setNewEventDate(e.target.value)} className="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required/>
+                                <input type="date" id="eventDate" value={newEventDate} onChange={e => setNewEventDate(e.target.value)} className="mt-1 block w-full px-3 py-2 bg-gray-100 text-black border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary" required/>
                             </div>
                             <div className="flex justify-end">
                                 <button type="submit" className="flex items-center bg-[#FF7B10] text-white px-4 py-2 rounded-lg font-semibold hover:bg-[#E66A00] transition-colors">Guardar Evento</button>

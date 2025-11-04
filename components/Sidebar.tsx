@@ -1,7 +1,7 @@
 
 import React, { ReactNode } from 'react';
 import { Role } from '../types';
-import { BookOpenIcon, UsersIcon, DocumentCheckIcon, ArrowLeftOnRectangleIcon, GraduationCapIcon, MagnifyingGlassIcon, UserCircleIcon, CalendarDaysIcon, FolderIcon, ChartBarIcon } from './icons';
+import { BookOpenIcon, UsersIcon, DocumentCheckIcon, ArrowLeftOnRectangleIcon, GraduationCapIcon, MagnifyingGlassIcon, UserCircleIcon, CalendarDaysIcon, FolderIcon, ChartBarIcon, ChartPieIcon } from './icons';
 
 interface NavLinkProps {
   icon: ReactNode;
@@ -36,6 +36,7 @@ const Sidebar: React.FC<SidebarProps> = ({ role, activeView, setActiveView, onLo
   const logoUrl = "https://tecintercontinental.com.mx/wp-content/uploads/2025/10/Tecnologico-Universitaerio-Intercontinental.png";
 
   const adminLinks = [
+    { id: 'dashboard', label: 'Dashboard', icon: <ChartPieIcon className="w-5 h-5" /> },
     { id: 'courses', label: 'Cursos', icon: <BookOpenIcon className="w-5 h-5" /> },
     { id: 'students', label: 'Estudiantes', icon: <UsersIcon className="w-5 h-5" /> },
     { id: 'submissions', label: 'Entregas', icon: <DocumentCheckIcon className="w-5 h-5" /> },
