@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { User } from '../types';
 import Sidebar from '../components/Sidebar';
@@ -23,6 +22,16 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({ user, onLogout }) =
     'browse': 'Explorar Cursos',
     'grades': 'Mis Calificaciones',
     'course-viewer': 'Viendo Curso',
+  };
+
+  const handleSetActiveView = (view: string) => {
+    setActiveView(view);
+    setSidebarOpen(false);
+  };
+
+  const handleLogoutClick = () => {
+    setSidebarOpen(false);
+    onLogout();
   };
 
   const handleViewCourse = (courseId: number) => {
@@ -59,8 +68,8 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({ user, onLogout }) =
       <Sidebar
         role={user.role}
         activeView={activeView}
-        setActiveView={setActiveView}
-        onLogout={onLogout}
+        setActiveView={handleSetActiveView}
+        onLogout={handleLogoutClick}
         isOpen={isSidebarOpen}
       />
       <div className="flex-1 flex flex-col overflow-hidden">

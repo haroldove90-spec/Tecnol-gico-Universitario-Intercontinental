@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { User } from '../types';
 import Sidebar from '../components/Sidebar';
@@ -22,6 +21,16 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
     submissions: 'Entregas y Calificaciones',
   };
 
+  const handleSetActiveView = (view: string) => {
+    setActiveView(view);
+    setSidebarOpen(false);
+  };
+
+  const handleLogoutClick = () => {
+    setSidebarOpen(false);
+    onLogout();
+  };
+
   const renderContent = () => {
     switch (activeView) {
       case 'courses':
@@ -40,8 +49,8 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
       <Sidebar
         role={user.role}
         activeView={activeView}
-        setActiveView={setActiveView}
-        onLogout={onLogout}
+        setActiveView={handleSetActiveView}
+        onLogout={handleLogoutClick}
         isOpen={isSidebarOpen}
       />
       <div className="flex-1 flex flex-col overflow-hidden">
