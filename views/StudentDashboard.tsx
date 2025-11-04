@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { User } from '../types';
 import Sidebar from '../components/Sidebar';
@@ -15,9 +14,10 @@ import Reports from './student/Reports';
 interface StudentDashboardProps {
   user: User;
   onLogout: () => void;
+  setCurrentUser: (user: User) => void;
 }
 
-const StudentDashboard: React.FC<StudentDashboardProps> = ({ user, onLogout }) => {
+const StudentDashboard: React.FC<StudentDashboardProps> = ({ user, onLogout, setCurrentUser }) => {
   const [activeView, setActiveView] = useState('my-courses');
   const [selectedCourseId, setSelectedCourseId] = useState<number | null>(null);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
@@ -72,7 +72,7 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({ user, onLogout }) =
        case 'reports':
         return <Reports user={user} />;
        case 'profile':
-        return <Profile user={user} />;
+        return <Profile user={user} onUpdateUser={setCurrentUser} />;
       default:
         return <MyCourses user={user} onViewCourse={handleViewCourse} />;
     }

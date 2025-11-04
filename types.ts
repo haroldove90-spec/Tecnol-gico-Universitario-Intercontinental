@@ -1,4 +1,3 @@
-
 export enum Role {
   ADMIN = 'ADMIN',
   STUDENT = 'STUDENT',
@@ -58,6 +57,7 @@ export interface CalendarEvent {
   title: string;
   date: string; // YYYY-MM-DD
   courseId?: number;
+  type?: 'course' | 'personal';
 }
 
 export interface PrivateFile {

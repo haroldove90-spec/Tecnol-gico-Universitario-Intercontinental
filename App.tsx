@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { User, Role } from './types';
 import { MOCK_USERS } from './constants';
@@ -29,7 +28,7 @@ const App: React.FC = () => {
   }
 
   if (currentUser.role === Role.STUDENT) {
-    return <StudentDashboard user={currentUser} onLogout={handleLogout} />;
+    return <StudentDashboard user={currentUser} onLogout={handleLogout} setCurrentUser={setCurrentUser} />;
   }
 
   return null;
