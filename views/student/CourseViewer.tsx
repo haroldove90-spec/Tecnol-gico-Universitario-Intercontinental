@@ -39,7 +39,7 @@ const LessonContent: React.FC<{ lesson: Lesson }> = ({ lesson }) => {
                             </label>
                         ))}
                     </div>
-                    <button className="mt-6 bg-black text-white px-5 py-2 rounded-lg font-semibold hover:bg-gray-800 transition-colors">
+                    <button className="mt-6 bg-[#FF7B10] text-white px-5 py-2 rounded-lg font-semibold hover:bg-[#E66A00] transition-colors">
                         Enviar Respuesta
                     </button>
                 </div>

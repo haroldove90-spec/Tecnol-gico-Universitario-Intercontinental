@@ -10,7 +10,7 @@ const CourseCard: React.FC<{ course: Course }> = ({ course }) => (
             <h3 className="text-lg font-bold text-black mb-2">{course.title}</h3>
             <p className="text-gray-600 text-sm mb-3">Por {course.instructor}</p>
             <p className="text-gray-700 text-sm mb-4 line-clamp-2 flex-grow">{course.description}</p>
-            <button className="mt-4 w-full bg-black text-white px-4 py-2 rounded-lg font-semibold hover:bg-gray-800 transition-colors">
+            <button className="mt-4 w-full bg-[#FF7B10] text-white px-4 py-2 rounded-lg font-semibold hover:bg-[#E66A00] transition-colors">
                 Ver Detalles
             </button>
         </div>

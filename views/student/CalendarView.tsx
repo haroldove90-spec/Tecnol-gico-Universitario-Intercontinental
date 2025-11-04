@@ -29,8 +29,8 @@ const CalendarView: React.FC = () => {
             <div className="flex justify-between items-center mb-6">
                 <h1 className="text-2xl font-bold text-black">Julio 2024</h1>
                 <div className="flex space-x-2">
-                    <button className="px-3 py-1 rounded-md bg-gray-200 text-sm font-semibold text-black hover:bg-gray-300">&lt;</button>
-                    <button className="px-3 py-1 rounded-md bg-gray-200 text-sm font-semibold text-black hover:bg-gray-300">&gt;</button>
+                    <button className="px-3 py-1 rounded-md bg-[#FF7B10] text-sm font-semibold text-white hover:bg-[#E66A00]">&lt;</button>
+                    <button className="px-3 py-1 rounded-md bg-[#FF7B10] text-sm font-semibold text-white hover:bg-[#E66A00]">&gt;</button>
                 </div>
             </div>
             <div className="grid grid-cols-7 gap-1 text-center">

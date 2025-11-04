@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Role } from '../types';
 
@@ -24,13 +23,13 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
         <div className="flex flex-col gap-4 mt-8">
           <button
             onClick={() => onLogin(Role.ADMIN)}
-            className="w-full px-4 py-3 font-semibold text-primary bg-white rounded-lg hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-primary focus:ring-white transition duration-300"
+            className="w-full px-4 py-3 font-semibold text-white bg-[#FF7B10] rounded-lg hover:bg-[#E66A00] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-primary focus:ring-white transition duration-300"
           >
             Entrar como Administrador
           </button>
           <button
             onClick={() => onLogin(Role.STUDENT)}
-            className="w-full px-4 py-3 font-semibold text-white bg-transparent border border-gray-400 rounded-lg hover:bg-white hover:text-primary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-primary focus:ring-gray-400 transition duration-300"
+            className="w-full px-4 py-3 font-semibold text-white bg-transparent border border-gray-400 rounded-lg hover:bg-[#FF7B10] hover:border-[#FF7B10] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-primary focus:ring-gray-400 transition duration-300"
           >
             Entrar como Estudiante
           </button>

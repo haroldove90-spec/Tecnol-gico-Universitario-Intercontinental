@@ -20,7 +20,7 @@ const PrivateFiles: React.FC = () => {
         <div>
             <div className="flex justify-between items-center mb-6">
                 <h2 className="text-2xl font-semibold text-gray-700">Mis Archivos</h2>
-                <button className="flex items-center bg-black text-white px-4 py-2 rounded-lg font-semibold hover:bg-gray-800 transition-colors">
+                <button className="flex items-center bg-[#FF7B10] text-white px-4 py-2 rounded-lg font-semibold hover:bg-[#E66A00] transition-colors">
                     <PlusCircleIcon className="w-5 h-5 mr-2" />
                     Subir Archivo
                 </button>
