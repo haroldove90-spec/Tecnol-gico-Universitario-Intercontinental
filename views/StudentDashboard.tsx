@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { User } from '../types';
 import Sidebar from '../components/Sidebar';
@@ -6,6 +7,10 @@ import MyCourses from './student/MyCourses';
 import BrowseCourses from './student/BrowseCourses';
 import Grades from './student/Grades';
 import CourseViewer from './student/CourseViewer';
+import Profile from './student/Profile';
+import CalendarView from './student/CalendarView';
+import PrivateFiles from './student/PrivateFiles';
+import Reports from './student/Reports';
 
 interface StudentDashboardProps {
   user: User;
@@ -21,6 +26,10 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({ user, onLogout }) =
     'my-courses': 'Mis Cursos',
     'browse': 'Explorar Cursos',
     'grades': 'Mis Calificaciones',
+    'calendar': 'Calendario Académico',
+    'files': 'Mis Archivos Privados',
+    'reports': 'Informes de Progreso',
+    'profile': 'Mi Perfil',
     'course-viewer': 'Viendo Curso',
   };
 
@@ -56,12 +65,20 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({ user, onLogout }) =
         return <BrowseCourses />;
       case 'grades':
         return <Grades user={user} />;
+      case 'calendar':
+        return <CalendarView />;
+       case 'files':
+        return <PrivateFiles />;
+       case 'reports':
+        return <Reports user={user} />;
+       case 'profile':
+        return <Profile user={user} />;
       default:
         return <MyCourses user={user} onViewCourse={handleViewCourse} />;
     }
   };
   
-  const currentTitle = activeView === 'course-viewer' ? 'Viendo Curso' : viewTitles[activeView];
+  const currentTitle = viewTitles[activeView] || 'Dashboard';
 
   return (
     <div className="flex h-screen bg-gray-100 font-sans">

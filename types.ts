@@ -52,3 +52,18 @@ export interface Submission {
 export interface StudentWithCourses extends User {
     enrolledCourses: Course[];
 }
+
+export interface CalendarEvent {
+  id: number;
+  title: string;
+  date: string; // YYYY-MM-DD
+  courseId?: number;
+}
+
+export interface PrivateFile {
+  id: number;
+  name: string;
+  size: string; // e.g., "1.2 MB"
+  type: 'pdf' | 'docx' | 'img' | 'zip';
+  uploadedAt: string; // ISO date string
+}

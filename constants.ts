@@ -1,5 +1,5 @@
 
-import { User, Role, Course, LessonType, Submission } from './types';
+import { User, Role, Course, LessonType, Submission, PrivateFile, CalendarEvent } from './types';
 
 export const MOCK_COURSES: Course[] = [
   {
@@ -81,5 +81,21 @@ export const MOCK_USERS: User[] = [
 
 export const MOCK_SUBMISSIONS: Submission[] = [
     {id: 1, studentId: 2, courseId: 1, lessonId: 3, content: "Respuesta al cuestionario...", grade: 85},
-    {id: 2, studentId: 3, courseId: 1, lessonId: 3, content: "Intento de cuestionario...", grade: null},
+    {id: 2, studentId: 3, courseId: 1, lessonId: 3, content: "Intento de cuestionario...", grade: 92},
+    {id: 3, studentId: 2, courseId: 2, lessonId: 6, content: "Respuesta al cuestionario...", grade: 78},
+];
+
+export const MOCK_PRIVATE_FILES: PrivateFile[] = [
+  { id: 1, name: 'Apuntes_React_Hooks.pdf', size: '2.5 MB', type: 'pdf', uploadedAt: '2023-10-26T10:00:00Z' },
+  { id: 2, name: 'Proyecto_Figma_Entrega1.zip', size: '15.2 MB', type: 'zip', uploadedAt: '2023-10-25T14:30:00Z' },
+  { id: 3, name: 'Esquema_Base_de_Datos.png', size: '800 KB', type: 'img', uploadedAt: '2023-10-22T09:15:00Z' },
+  { id: 4, name: 'Ensayo_NodeJS.docx', size: '1.1 MB', type: 'docx', uploadedAt: '2023-10-20T18:00:00Z' },
+];
+
+// Mock data for July 2024
+export const MOCK_CALENDAR_EVENTS: CalendarEvent[] = [
+    { id: 1, title: 'Entrega Cuestionario M1', date: '2024-07-15', courseId: 1 },
+    { id: 2, title: 'Examen Final - React', date: '2024-07-28', courseId: 1 },
+    { id: 3, title: 'Presentación Proyecto Figma', date: '2024-07-22', courseId: 2 },
+    { id: 4, title: 'Inicio Módulo 2 - Node.js', date: '2024-08-01', courseId: 3 },
 ];

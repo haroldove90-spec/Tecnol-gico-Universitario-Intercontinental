@@ -1,7 +1,7 @@
 
 import React, { ReactNode } from 'react';
 import { Role } from '../types';
-import { BookOpenIcon, UsersIcon, DocumentCheckIcon, ArrowLeftOnRectangleIcon, GraduationCapIcon, MagnifyingGlassIcon } from './icons';
+import { BookOpenIcon, UsersIcon, DocumentCheckIcon, ArrowLeftOnRectangleIcon, GraduationCapIcon, MagnifyingGlassIcon, UserCircleIcon, CalendarDaysIcon, FolderIcon, ChartBarIcon } from './icons';
 
 interface NavLinkProps {
   icon: ReactNode;
@@ -45,6 +45,10 @@ const Sidebar: React.FC<SidebarProps> = ({ role, activeView, setActiveView, onLo
     { id: 'my-courses', label: 'Mis Cursos', icon: <GraduationCapIcon className="w-5 h-5" /> },
     { id: 'browse', label: 'Explorar Cursos', icon: <MagnifyingGlassIcon className="w-5 h-5" /> },
     { id: 'grades', label: 'Calificaciones', icon: <DocumentCheckIcon className="w-5 h-5" /> },
+    { id: 'calendar', label: 'Calendario', icon: <CalendarDaysIcon className="w-5 h-5" /> },
+    { id: 'files', label: 'Archivos Privados', icon: <FolderIcon className="w-5 h-5" /> },
+    { id: 'reports', label: 'Informes', icon: <ChartBarIcon className="w-5 h-5" /> },
+    { id: 'profile', label: 'Mi Perfil', icon: <UserCircleIcon className="w-5 h-5" /> },
   ];
 
   const links = role === Role.ADMIN ? adminLinks : studentLinks;
