@@ -1,0 +1,5 @@
+{
+  "name": "Tecnológico Universitario Intercontinental Dashboard",
+  "description": "A modern and responsive dashboard for an online university. It includes separate interfaces for administrators to manage courses and students, and for students to take courses and view their progress.",
+  "requestFramePermissions": []
+}
