@@ -3,10 +3,14 @@ import React, { useState } from 'react';
 import { User } from '../types';
 import Sidebar from '../components/Sidebar';
 import Header from '../components/Header';
-import CoursesList from './admin/CoursesList';
-import StudentsList from './admin/StudentsList';
-import SubmissionsList from './admin/SubmissionsList';
-import DashboardHome from './admin/DashboardHome';
+
+// Due to file constraints, modules are imported from repurposed files.
+import { ReportsModule, SecurityModule } from './admin/DashboardHome';
+import { CareersModule, GroupsModule } from './admin/CoursesList';
+import { StudentsModule, KardexModule } from './admin/StudentsList';
+import { GradesModule, ReportCardsModule } from './admin/SubmissionsList';
+import { TeachersModule, PeriodsModule } from './admin/CourseForm';
+
 
 interface AdminDashboardProps {
   user: User;
@@ -14,14 +18,20 @@ interface AdminDashboardProps {
 }
 
 const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
-  const [activeView, setActiveView] = useState('dashboard');
+  const [activeView, setActiveView] = useState('students');
   const [isSidebarOpen, setSidebarOpen] = useState(false);
 
   const viewTitles: { [key: string]: string } = {
-    dashboard: 'Resumen General',
-    courses: 'Gestión de Cursos',
-    students: 'Gestión de Estudiantes',
-    submissions: 'Entregas y Calificaciones',
+    students: 'Módulo de Alumnos',
+    careers: 'Módulo de Carreras y Materias',
+    teachers: 'Módulo de Docentes',
+    groups: 'Módulo de Grupos',
+    grades: 'Módulo de Calificaciones',
+    kardex: 'Módulo de Kardex',
+    'report-cards': 'Módulo de Boletas',
+    periods: 'Módulo de Control de Periodos Escolares',
+    reports: 'Módulo de Reportes y Estadísticas',
+    security: 'Módulo de Seguridad y Usuarios'
   };
 
   const handleSetActiveView = (view: string) => {
@@ -36,16 +46,28 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
 
   const renderContent = () => {
     switch (activeView) {
-      case 'dashboard':
-        return <DashboardHome />;
-      case 'courses':
-        return <CoursesList />;
       case 'students':
-        return <StudentsList />;
-      case 'submissions':
-        return <SubmissionsList />;
+        return <StudentsModule />;
+      case 'kardex':
+        return <KardexModule />;
+      case 'careers':
+        return <CareersModule />;
+      case 'groups':
+        return <GroupsModule />;
+      case 'grades':
+        return <GradesModule />;
+      case 'report-cards':
+        return <ReportCardsModule />;
+      case 'reports':
+        return <ReportsModule />;
+      case 'security':
+        return <SecurityModule />;
+      case 'teachers':
+        return <TeachersModule />;
+      case 'periods':
+        return <PeriodsModule />;
       default:
-        return <DashboardHome />;
+        return <StudentsModule />;
     }
   };
 

@@ -1,10 +1,8 @@
 
-
 import React, { useMemo } from 'react';
-import { MOCK_COURSES, MOCK_SUBMISSIONS, MOCK_USERS } from '../../constants';
-import { Role } from '../../types';
-// FIX: Import missing icon components
-import { BookOpenIcon, UsersIcon, GraduationCapIcon } from '../../components/icons';
+import { MOCK_COURSES, MOCK_USERS, MOCK_GRADES, MOCK_SYSTEM_USERS } from '../../constants';
+import { Role, SystemRole } from '../../types';
+import { BookOpenIcon, UsersIcon, GraduationCapIcon, PlusCircleIcon } from '../../components/icons';
 
 const StatCard: React.FC<{ title: string; value: string | number; icon: React.ReactNode }> = ({ title, value, icon }) => (
     <div className="bg-white p-6 rounded-2xl shadow-lg flex items-center space-x-4">
@@ -18,89 +16,17 @@ const StatCard: React.FC<{ title: string; value: string | number; icon: React.Re
     </div>
 );
 
-const DoughnutChart: React.FC<{ data: { label: string, value: number, color: string }[] }> = ({ data }) => {
-    const total = data.reduce((sum, item) => sum + item.value, 0);
-    if (total === 0) {
-        return <div className="flex items-center justify-center h-full text-gray-500">No hay datos de calificaciones.</div>;
-    }
-    
-    let cumulative = 0;
-    const segments = data.map(item => {
-        const percentage = item.value / total;
-        const dashArray = 2 * Math.PI * 40;
-        const dashOffset = dashArray * (1 - cumulative - percentage / 2);
-        const strokeDasharray = `${percentage * dashArray} ${dashArray * (1 - percentage)}`;
-        cumulative += percentage;
-        return { ...item, strokeDasharray, dashOffset };
-    });
-
-    return (
-        <div className="flex items-center justify-center space-x-8">
-            <div className="relative w-48 h-48">
-                <svg viewBox="0 0 100 100" className="-rotate-90">
-                    {segments.map((segment, index) => (
-                        <circle
-                            key={index}
-                            cx="50" cy="50" r="40"
-                            fill="transparent"
-                            stroke={segment.color}
-                            strokeWidth="20"
-                            strokeDasharray={segment.strokeDasharray}
-                            strokeDashoffset={segment.dashOffset}
-                        />
-                    ))}
-                </svg>
-            </div>
-            <ul className="space-y-2">
-                {data.map(item => (
-                    <li key={item.label} className="flex items-center text-sm">
-                        <span className="w-3 h-3 rounded-full mr-2" style={{ backgroundColor: item.color }}></span>
-                        <span className="font-semibold text-gray-700">{item.label}:</span>
-                        <span className="ml-1 text-gray-500">{item.value}</span>
-                    </li>
-                ))}
-            </ul>
-        </div>
-    );
-};
-
-
-const DashboardHome: React.FC = () => {
+export const ReportsModule: React.FC = () => {
     const stats = useMemo(() => {
         const students = MOCK_USERS.filter(u => u.role === Role.STUDENT);
-        const gradedSubmissions = MOCK_SUBMISSIONS.filter(s => s.grade !== null);
-        const totalGrades = gradedSubmissions.reduce((sum, s) => sum + s.grade!, 0);
-        
-        const enrollmentsPerCourse = MOCK_COURSES.map(course => ({
-            id: course.id,
-            title: course.title,
-            studentCount: students.filter(s => s.enrolledCourseIds.includes(course.id)).length
-        }));
-
-        const gradeDistribution = {
-            excellent: gradedSubmissions.filter(s => s.grade! >= 90).length,
-            good: gradedSubmissions.filter(s => s.grade! >= 70 && s.grade! < 90).length,
-            regular: gradedSubmissions.filter(s => s.grade! >= 50 && s.grade! < 70).length,
-            improvement: gradedSubmissions.filter(s => s.grade! < 50).length,
-        };
-
+        const graded = MOCK_GRADES.filter(s => s.finalGrade !== null);
+        const totalGrades = graded.reduce((sum, s) => sum + s.finalGrade!, 0);
         return {
             totalCourses: MOCK_COURSES.length,
             totalStudents: students.length,
-            averageGrade: gradedSubmissions.length > 0 ? (totalGrades / gradedSubmissions.length).toFixed(1) : 'N/A',
-            enrollmentsPerCourse,
-            gradeDistribution
+            averageGrade: graded.length > 0 ? (totalGrades / graded.length).toFixed(1) : 'N/A',
         };
     }, []);
-
-    const doughnutData = [
-        { label: 'Excelente (90+)', value: stats.gradeDistribution.excellent, color: '#10B981' },
-        { label: 'Bueno (70-89)', value: stats.gradeDistribution.good, color: '#3B82F6' },
-        { label: 'Regular (50-69)', value: stats.gradeDistribution.regular, color: '#F59E0B' },
-        { label: 'Mejora (<50)', value: stats.gradeDistribution.improvement, color: '#EF4444' },
-    ];
-
-    const maxEnrollment = Math.max(...stats.enrollmentsPerCourse.map(c => c.studentCount), 0);
 
     return (
         <div className="space-y-8">
@@ -109,34 +35,63 @@ const DashboardHome: React.FC = () => {
                 <StatCard title="Total de Estudiantes" value={stats.totalStudents} icon={<UsersIcon className="w-6 h-6"/>} />
                 <StatCard title="Promedio General" value={stats.averageGrade} icon={<GraduationCapIcon className="w-6 h-6"/>} />
             </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
-                <div className="lg:col-span-3 bg-white p-6 rounded-2xl shadow-lg">
-                    <h3 className="text-lg font-bold text-black mb-4">Estudiantes por Curso</h3>
-                    <div className="space-y-4">
-                        {stats.enrollmentsPerCourse.map(course => (
-                            <div key={course.id} className="flex items-center">
-                                <p className="w-1/3 text-sm font-medium text-gray-600 truncate">{course.title}</p>
-                                <div className="w-2/3 bg-gray-200 rounded-full h-4">
-                                    <div 
-                                        className="bg-[#FF7B10] h-4 rounded-full flex items-center justify-end pr-2 text-white text-xs font-bold"
-                                        style={{ width: maxEnrollment > 0 ? `${(course.studentCount / maxEnrollment) * 100}%` : '0%' }}
-                                    >
-                                        {course.studentCount}
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-
-                <div className="lg:col-span-2 bg-white p-6 rounded-2xl shadow-lg">
-                    <h3 className="text-lg font-bold text-black mb-4">Distribución de Calificaciones</h3>
-                    <DoughnutChart data={doughnutData} />
-                </div>
+             <div className="bg-white p-6 rounded-2xl shadow-lg">
+                <h3 className="text-lg font-bold text-black mb-4">Estadísticas Adicionales</h3>
+                <p className="text-gray-600">En esta sección se mostrarían reportes de tasas de reprobación, egreso, eficiencia terminal, y promedios por grupo, carrera o periodo. Los reportes serían exportables a Excel, PDF o CSV.</p>
             </div>
         </div>
     );
 };
 
-export default DashboardHome;
+const getRoleColor = (role: SystemRole) => {
+    switch(role) {
+        case SystemRole.ADMIN: return 'bg-red-100 text-red-800';
+        case SystemRole.COORDINATOR: return 'bg-purple-100 text-purple-800';
+        case SystemRole.TEACHER: return 'bg-blue-100 text-blue-800';
+        default: return 'bg-gray-100 text-gray-800';
+    }
+}
+
+export const SecurityModule: React.FC = () => {
+    return (
+        <div>
+            <div className="flex justify-between items-center mb-6">
+                <h2 className="text-2xl font-semibold text-gray-700">Usuarios del Sistema</h2>
+                 <button className="flex items-center bg-[#FF7B10] text-white px-4 py-2 rounded-lg font-semibold hover:bg-[#E66A00] transition-colors">
+                    <PlusCircleIcon className="w-5 h-5 mr-2" />
+                    Nuevo Usuario
+                </button>
+            </div>
+             <div className="bg-white rounded-lg shadow overflow-x-auto">
+                <table className="w-full whitespace-nowrap">
+                    <thead className="bg-gray-50">
+                        <tr>
+                            <th className="px-6 py-3 text-left text-xs font-semibold text-black uppercase tracking-wider">Nombre</th>
+                            <th className="px-6 py-3 text-left text-xs font-semibold text-black uppercase tracking-wider">Email</th>
+                            <th className="px-6 py-3 text-left text-xs font-semibold text-black uppercase tracking-wider">Rol</th>
+                            <th className="px-6 py-3 text-left text-xs font-semibold text-black uppercase tracking-wider">Último Acceso</th>
+                            <th className="px-6 py-3 text-left text-xs font-semibold text-black uppercase tracking-wider">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-200">
+                        {MOCK_SYSTEM_USERS.map(user => (
+                            <tr key={user.id}>
+                                <td className="px-6 py-4 font-medium text-black">{user.name}</td>
+                                <td className="px-6 py-4 text-sm text-gray-700">{user.email}</td>
+                                <td className="px-6 py-4">
+                                     <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${getRoleColor(user.role)}`}>
+                                        {user.role}
+                                    </span>
+                                </td>
+                                <td className="px-6 py-4 text-sm text-gray-700">{new Date(user.lastAccess).toLocaleString()}</td>
+                                <td className="px-6 py-4">
+                                    <button className="text-blue-600 hover:underline text-sm font-medium">Editar Permisos</button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+             </div>
+        </div>
+    );
+};

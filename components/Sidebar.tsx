@@ -1,7 +1,7 @@
 
 import React, { ReactNode } from 'react';
 import { Role } from '../types';
-import { BookOpenIcon, UsersIcon, DocumentCheckIcon, ArrowLeftOnRectangleIcon, GraduationCapIcon, MagnifyingGlassIcon, UserCircleIcon, CalendarDaysIcon, FolderIcon, ChartBarIcon, ChartPieIcon } from './icons';
+import { BookOpenIcon, UsersIcon, DocumentCheckIcon, ArrowLeftOnRectangleIcon, GraduationCapIcon, MagnifyingGlassIcon, UserCircleIcon, CalendarDaysIcon, FolderIcon, ChartBarIcon, ChartPieIcon, BriefcaseIcon, ViewGridIcon, IdentificationIcon, ShieldCheckIcon, DocumentTextIcon } from './icons';
 
 interface NavLinkProps {
   icon: ReactNode;
@@ -36,10 +36,16 @@ const Sidebar: React.FC<SidebarProps> = ({ role, activeView, setActiveView, onLo
   const logoUrl = "https://tecintercontinental.com.mx/wp-content/uploads/2025/10/Tecnologico-Universitaerio-Intercontinental.png";
 
   const adminLinks = [
-    { id: 'dashboard', label: 'Dashboard', icon: <ChartPieIcon className="w-5 h-5" /> },
-    { id: 'courses', label: 'Cursos', icon: <BookOpenIcon className="w-5 h-5" /> },
-    { id: 'students', label: 'Estudiantes', icon: <UsersIcon className="w-5 h-5" /> },
-    { id: 'submissions', label: 'Entregas', icon: <DocumentCheckIcon className="w-5 h-5" /> },
+    { id: 'students', label: 'Alumnos', icon: <UsersIcon className="w-5 h-5" /> },
+    { id: 'careers', label: 'Carreras y Materias', icon: <BookOpenIcon className="w-5 h-5" /> },
+    { id: 'teachers', label: 'Docentes', icon: <BriefcaseIcon className="w-5 h-5" /> },
+    { id: 'groups', label: 'Grupos', icon: <ViewGridIcon className="w-5 h-5" /> },
+    { id: 'grades', label: 'Calificaciones', icon: <DocumentCheckIcon className="w-5 h-5" /> },
+    { id: 'kardex', label: 'Kardex', icon: <IdentificationIcon className="w-5 h-5" /> },
+    { id: 'report-cards', label: 'Boletas', icon: <DocumentTextIcon className="w-5 h-5" /> },
+    { id: 'periods', label: 'Periodos Escolares', icon: <CalendarDaysIcon className="w-5 h-5" /> },
+    { id: 'reports', label: 'Reportes y Estadísticas', icon: <ChartBarIcon className="w-5 h-5" /> },
+    { id: 'security', label: 'Seguridad y Usuarios', icon: <ShieldCheckIcon className="w-5 h-5" /> },
   ];
 
   const studentLinks = [
