@@ -55,57 +55,16 @@ export const MOCK_COURSES: Course[] = [
 
 
 export const MOCK_USERS: User[] = [
-  {
-    id: 1,
-    name: 'Admin User',
-    email: 'admin@moderna.com',
-    role: Role.ADMIN,
-    enrolledCourseIds: [],
-  },
-  {
-    id: 2,
-    name: 'Carlos Gomez',
-    email: 'carlos@test.com',
-    role: Role.STUDENT,
-    enrolledCourseIds: [1, 2],
-    matricula: 'TUI2024001',
-    careerId: 1,
-    semester: 3,
-    status: StudentStatus.ACTIVE
-  },
-  {
-    id: 3,
-    name: 'Ana Martinez',
-    email: 'ana@test.com',
-    role: Role.STUDENT,
-    enrolledCourseIds: [1],
-    matricula: 'TUI2024002',
-    careerId: 1,
-    semester: 1,
-    status: StudentStatus.ACTIVE
-  },
-  {
-    id: 4,
-    name: 'Luisa Fernandez',
-    email: 'luisa@test.com',
-    role: Role.STUDENT,
-    enrolledCourseIds: [2],
-    matricula: 'TUI2023015',
-    careerId: 2,
-    semester: 5,
-    status: StudentStatus.TEMP_LEAVE
-  },
-  {
-    id: 5,
-    name: 'Jorge Perez',
-    email: 'jorge@test.com',
-    role: Role.STUDENT,
-    enrolledCourseIds: [3],
-    matricula: 'TUI2022007',
-    careerId: 3,
-    semester: 8,
-    status: StudentStatus.GRADUATED
-  },
+  { id: 1, name: 'Admin User', email: 'admin@moderna.com', role: Role.ADMIN, enrolledCourseIds: [] },
+  { id: 2, name: 'Carlos Gomez', email: 'carlos@test.com', role: Role.STUDENT, enrolledCourseIds: [1, 2], matricula: 'TUI2024001', careerId: 1, semester: 3, status: StudentStatus.ACTIVE },
+  { id: 3, name: 'Ana Martinez', email: 'ana@test.com', role: Role.STUDENT, enrolledCourseIds: [1], matricula: 'TUI2024002', careerId: 1, semester: 1, status: StudentStatus.ACTIVE },
+  { id: 4, name: 'Luisa Fernandez', email: 'luisa@test.com', role: Role.STUDENT, enrolledCourseIds: [2], matricula: 'TUI2023015', careerId: 2, semester: 5, status: StudentStatus.TEMP_LEAVE },
+  { id: 5, name: 'Jorge Perez', email: 'jorge@test.com', role: Role.STUDENT, enrolledCourseIds: [3], matricula: 'TUI2022007', careerId: 3, semester: 8, status: StudentStatus.GRADUATED },
+  { id: 6, name: 'Sofia Rodriguez', email: 'sofia@test.com', role: Role.STUDENT, enrolledCourseIds: [3], matricula: 'TUI2024003', careerId: 3, semester: 2, status: StudentStatus.ACTIVE },
+  { id: 7, name: 'Miguel Angel Torres', email: 'miguel@test.com', role: Role.STUDENT, enrolledCourseIds: [4], matricula: 'TUI2023010', careerId: 4, semester: 4, status: StudentStatus.ACTIVE },
+  { id: 8, name: 'Valeria Mendoza', email: 'valeria@test.com', role: Role.STUDENT, enrolledCourseIds: [1], matricula: 'TUI2024004', careerId: 1, semester: 1, status: StudentStatus.ACTIVE },
+  { id: 9, name: 'Ricardo Sanchez', email: 'ricardo@test.com', role: Role.STUDENT, enrolledCourseIds: [2], matricula: 'TUI2023020', careerId: 2, semester: 3, status: StudentStatus.ACTIVE },
+  { id: 10, name: 'Jimena Castro', email: 'jimena@test.com', role: Role.STUDENT, enrolledCourseIds: [], matricula: 'TUI2021005', careerId: 1, semester: 9, status: StudentStatus.PERM_LEAVE },
 ];
 
 export const MOCK_SUBMISSIONS: Submission[] = [
@@ -127,17 +86,21 @@ export const MOCK_CALENDAR_EVENTS: CalendarEvent[] = [
 // --- NEW MOCK DATA FOR ADMIN SYSTEM ---
 
 export const MOCK_CAREERS: Career[] = [
-    { id: 1, name: 'Licenciatura en Derecho', planCode: 'LD-2022' },
-    { id: 2, name: 'Licenciatura en Educación', planCode: 'LE-2021' },
-    { id: 3, name: 'Licenciatura en Tecnologías de la Información', planCode: 'LTI-2023' },
-    { id: 4, name: 'Licenciatura en Ciencias Forenses', planCode: 'LCF-2022' },
+    { id: 1, name: 'Licenciatura en Derecho', planCode: 'LD-2022', totalCredits: 320 },
+    { id: 2, name: 'Licenciatura en Educación', planCode: 'LE-2021', totalCredits: 300 },
+    { id: 3, name: 'Licenciatura en Tecnologías de la Información', planCode: 'LTI-2023', totalCredits: 350 },
+    { id: 4, name: 'Licenciatura en Ciencias Forenses', planCode: 'LCF-2022', totalCredits: 330 },
 ];
 
 export const MOCK_SUBJECTS: Subject[] = [
     { id: 1, key: 'DER-101', name: 'Introducción al Derecho', credits: 8, theoryHours: 4, practiceHours: 2, semester: 1, careerId: 1 },
     { id: 2, key: 'DER-102', name: 'Derecho Romano', credits: 8, theoryHours: 4, practiceHours: 2, semester: 1, careerId: 1 },
-    { id: 3, key: 'EDU-101', name: 'Psicología Educativa', credits: 6, theoryHours: 3, practiceHours: 2, semester: 1, careerId: 2 },
-    { id: 4, key: 'TI-101', name: 'Fundamentos de Programación', credits: 8, theoryHours: 3, practiceHours: 4, semester: 1, careerId: 3 },
+    { id: 3, key: 'DER-301', name: 'Derecho Penal I', credits: 8, theoryHours: 4, practiceHours: 2, semester: 3, careerId: 1 },
+    { id: 4, key: 'EDU-101', name: 'Psicología Educativa', credits: 6, theoryHours: 3, practiceHours: 2, semester: 1, careerId: 2 },
+    { id: 5, key: 'EDU-305', name: 'Didáctica General', credits: 7, theoryHours: 3, practiceHours: 3, semester: 3, careerId: 2 },
+    { id: 6, key: 'TI-101', name: 'Fundamentos de Programación', credits: 8, theoryHours: 3, practiceHours: 4, semester: 1, careerId: 3 },
+    { id: 7, key: 'TI-203', name: 'Bases de Datos', credits: 8, theoryHours: 3, practiceHours: 4, semester: 2, careerId: 3 },
+    { id: 8, key: 'FOR-401', name: 'Criminalística de Campo', credits: 9, theoryHours: 4, practiceHours: 5, semester: 4, careerId: 4 },
 ];
 
 export const MOCK_TEACHERS: Teacher[] = [
@@ -145,27 +108,39 @@ export const MOCK_TEACHERS: Teacher[] = [
     { id: 2, name: 'Mtra. Isabel Torres', email: 'itorres@tecinter.edu', employeeId: 'DOC002' },
     { id: 3, name: 'Ing. Ricardo Morales', email: 'rmorales@tecinter.edu', employeeId: 'DOC003' },
     { id: 4, name: 'Dra. Laura Campos', email: 'lcampos@tecinter.edu', employeeId: 'DOC004' },
+    { id: 5, name: 'Dr. Fernando Herrera', email: 'fherrera@tecinter.edu', employeeId: 'DOC005' },
 ];
 
 export const MOCK_PERIODS: SchoolPeriod[] = [
     { id: 1, name: 'Enero - Junio 2024', startDate: '2024-01-15', endDate: '2024-06-28' },
     { id: 2, name: 'Agosto - Diciembre 2024', startDate: '2024-08-05', endDate: '2024-12-13' },
+    { id: 3, name: 'Verano 2024', startDate: '2024-07-01', endDate: '2024-07-31' },
 ];
 
 export const MOCK_GROUPS: Group[] = [
-    { id: 1, subjectId: 1, teacherId: 1, periodId: 1, schedule: 'L-M-V 7:00-9:00', studentIds: [2, 3] },
-    { id: 2, subjectId: 3, teacherId: 2, periodId: 1, schedule: 'M-J 10:00-12:00', studentIds: [4] },
-    { id: 3, subjectId: 4, teacherId: 3, periodId: 1, schedule: 'L-M-V 9:00-11:00', studentIds: [5] },
+    { id: 1, subjectId: 1, teacherId: 1, periodId: 1, schedule: 'L-M-V 7:00-9:00', studentIds: [3, 8] },
+    { id: 2, subjectId: 3, teacherId: 1, periodId: 1, schedule: 'M-J 11:00-13:00', studentIds: [2] },
+    { id: 3, subjectId: 4, teacherId: 2, periodId: 1, schedule: 'M-J 10:00-12:00', studentIds: [4] },
+    { id: 4, subjectId: 5, teacherId: 2, periodId: 1, schedule: 'L-V 8:00-10:00', studentIds: [9] },
+    { id: 5, subjectId: 7, teacherId: 3, periodId: 1, schedule: 'L-M-V 9:00-11:00', studentIds: [5, 6] },
+    { id: 6, subjectId: 8, teacherId: 4, periodId: 1, schedule: 'S 9:00-14:00', studentIds: [7] },
 ];
 
 export const MOCK_GRADES: Grade[] = [
-    { id: 1, studentId: 2, subjectId: 1, periodId: 1, partial1: 85, partial2: 90, finalExam: 88, finalGrade: 88 },
+    { id: 1, studentId: 2, subjectId: 3, periodId: 1, partial1: 85, partial2: 90, finalExam: 88, finalGrade: 88 },
     { id: 2, studentId: 3, subjectId: 1, periodId: 1, partial1: 92, partial2: 95, finalExam: 94, finalGrade: 94 },
-    { id: 3, studentId: 4, subjectId: 3, periodId: 1, partial1: 70, partial2: 75, finalExam: null, finalGrade: null },
+    { id: 3, studentId: 4, subjectId: 4, periodId: 1, partial1: 70, partial2: 75, finalExam: null, finalGrade: null },
+    { id: 4, studentId: 8, subjectId: 1, periodId: 1, partial1: 88, partial2: 85, finalExam: 90, finalGrade: 88 },
+    { id: 5, studentId: 9, subjectId: 5, periodId: 1, partial1: 78, partial2: 82, finalExam: 80, finalGrade: 80 },
+    { id: 6, studentId: 6, subjectId: 7, periodId: 1, partial1: 95, partial2: 98, finalExam: 96, finalGrade: 96 },
+    { id: 7, studentId: 7, subjectId: 8, periodId: 1, partial1: 65, partial2: 70, finalExam: 68, finalGrade: 68 },
+    { id: 8, studentId: 5, subjectId: 7, periodId: 1, partial1: 100, partial2: 100, finalExam: 100, finalGrade: 100 },
 ];
 
 export const MOCK_SYSTEM_USERS: SystemUser[] = [
     { id: 1, name: 'Admin User', email: 'admin@moderna.com', role: SystemRole.ADMIN, lastAccess: '2024-07-20T10:00:00Z' },
     { id: 2, name: 'Dr. Alejandro Vargas', email: 'avargas@tecinter.edu', role: SystemRole.TEACHER, lastAccess: '2024-07-19T15:30:00Z' },
     { id: 3, name: 'Coordinador Derecho', email: 'coord.derecho@tecinter.edu', role: SystemRole.COORDINATOR, lastAccess: '2024-07-20T09:00:00Z' },
+    { id: 4, name: 'Mtra. Isabel Torres', email: 'itorres@tecinter.edu', role: SystemRole.TEACHER, lastAccess: '2024-07-20T11:00:00Z' },
+    { id: 5, name: 'Coordinador Académico General', email: 'coord.general@tecinter.edu', role: SystemRole.COORDINATOR, lastAccess: '2024-07-18T12:00:00Z' },
 ];

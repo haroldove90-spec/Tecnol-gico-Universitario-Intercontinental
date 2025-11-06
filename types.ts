@@ -86,6 +86,7 @@ export interface Career {
   id: number;
   name: string;
   planCode: string;
+  totalCredits: number;
 }
 
 export interface Subject {

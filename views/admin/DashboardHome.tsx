@@ -1,8 +1,8 @@
-
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { MOCK_COURSES, MOCK_USERS, MOCK_GRADES, MOCK_SYSTEM_USERS } from '../../constants';
-import { Role, SystemRole } from '../../types';
+import { Role, SystemRole, StudentStatus, SystemUser } from '../../types';
 import { BookOpenIcon, UsersIcon, GraduationCapIcon, PlusCircleIcon } from '../../components/icons';
+import Modal from '../../components/Modal';
 
 const StatCard: React.FC<{ title: string; value: string | number; icon: React.ReactNode }> = ({ title, value, icon }) => (
     <div className="bg-white p-6 rounded-2xl shadow-lg flex items-center space-x-4">
@@ -15,6 +15,58 @@ const StatCard: React.FC<{ title: string; value: string | number; icon: React.Re
         </div>
     </div>
 );
+
+const StudentStatusPieChart: React.FC = () => {
+    const statusCounts = useMemo(() => {
+        const counts = {
+            [StudentStatus.ACTIVE]: 0,
+            [StudentStatus.GRADUATED]: 0,
+            [StudentStatus.TEMP_LEAVE]: 0,
+            [StudentStatus.PERM_LEAVE]: 0,
+        };
+        MOCK_USERS.filter(u => u.role === Role.STUDENT).forEach(student => {
+            if (student.status && counts[student.status] !== undefined) {
+                counts[student.status]++;
+            }
+        });
+        return counts;
+    }, []);
+
+    const totalStudents = MOCK_USERS.filter(u => u.role === Role.STUDENT).length;
+    const data = [
+        { status: StudentStatus.ACTIVE, value: statusCounts[StudentStatus.ACTIVE], color: 'bg-green-500' },
+        { status: StudentStatus.GRADUATED, value: statusCounts[StudentStatus.GRADUATED], color: 'bg-blue-500' },
+        { status: StudentStatus.TEMP_LEAVE, value: statusCounts[StudentStatus.TEMP_LEAVE], color: 'bg-yellow-500' },
+        { status: StudentStatus.PERM_LEAVE, value: statusCounts[StudentStatus.PERM_LEAVE], color: 'bg-red-500' },
+    ];
+    
+    let cumulativePercent = 0;
+    const gradients = data.map(item => {
+        const percent = (item.value / totalStudents) * 100;
+        const start = cumulativePercent;
+        cumulativePercent += percent;
+        const end = cumulativePercent;
+        return `${item.color.replace('bg-', '')} ${start}% ${end}%`;
+    });
+
+
+    return (
+        <div className="bg-white p-6 rounded-2xl shadow-lg">
+             <h3 className="text-lg font-bold text-black mb-4">Distribución de Alumnos por Estatus</h3>
+             <div className="flex items-center gap-8">
+                <div className="w-32 h-32 rounded-full" style={{background: `conic-gradient(${gradients.join(',')})`}}></div>
+                <div className="space-y-2">
+                    {data.map(item => (
+                        <div key={item.status} className="flex items-center">
+                            <div className={`w-4 h-4 rounded-sm mr-2 ${item.color}`}></div>
+                            <span>{item.status}: {item.value}</span>
+                        </div>
+                    ))}
+                </div>
+             </div>
+        </div>
+    );
+};
 
 export const ReportsModule: React.FC = () => {
     const stats = useMemo(() => {
@@ -31,14 +83,11 @@ export const ReportsModule: React.FC = () => {
     return (
         <div className="space-y-8">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <StatCard title="Total de Cursos" value={stats.totalCourses} icon={<BookOpenIcon className="w-6 h-6"/>} />
-                <StatCard title="Total de Estudiantes" value={stats.totalStudents} icon={<UsersIcon className="w-6 h-6"/>} />
+                <StatCard title="Total de Carreras" value={stats.totalCourses} icon={<BookOpenIcon className="w-6 h-6"/>} />
+                <StatCard title="Total de Alumnos" value={stats.totalStudents} icon={<UsersIcon className="w-6 h-6"/>} />
                 <StatCard title="Promedio General" value={stats.averageGrade} icon={<GraduationCapIcon className="w-6 h-6"/>} />
             </div>
-             <div className="bg-white p-6 rounded-2xl shadow-lg">
-                <h3 className="text-lg font-bold text-black mb-4">Estadísticas Adicionales</h3>
-                <p className="text-gray-600">En esta sección se mostrarían reportes de tasas de reprobación, egreso, eficiencia terminal, y promedios por grupo, carrera o periodo. Los reportes serían exportables a Excel, PDF o CSV.</p>
-            </div>
+            <StudentStatusPieChart />
         </div>
     );
 };
@@ -53,11 +102,28 @@ const getRoleColor = (role: SystemRole) => {
 }
 
 export const SecurityModule: React.FC = () => {
+    const [users, setUsers] = useState<SystemUser[]>(MOCK_SYSTEM_USERS);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [editingUser, setEditingUser] = useState<SystemUser | null>(null);
+
+    const handleSave = (user: SystemUser) => {
+        if (editingUser) {
+            setUsers(prev => prev.map(u => u.id === user.id ? user : u));
+        } else {
+            setUsers(prev => [user, ...prev]);
+        }
+        setIsModalOpen(false);
+        setEditingUser(null);
+    };
+    
     return (
         <div>
+            <Modal isOpen={isModalOpen} onClose={() => { setIsModalOpen(false); setEditingUser(null); }} title={editingUser ? "Editar Usuario" : "Nuevo Usuario del Sistema"}>
+                <UserForm user={editingUser} onSave={handleSave} onCancel={() => { setIsModalOpen(false); setEditingUser(null); }} />
+            </Modal>
             <div className="flex justify-between items-center mb-6">
                 <h2 className="text-2xl font-semibold text-gray-700">Usuarios del Sistema</h2>
-                 <button className="flex items-center bg-[#FF7B10] text-white px-4 py-2 rounded-lg font-semibold hover:bg-[#E66A00] transition-colors">
+                 <button onClick={() => setIsModalOpen(true)} className="flex items-center bg-[#FF7B10] text-white px-4 py-2 rounded-lg font-semibold hover:bg-[#E66A00] transition-colors">
                     <PlusCircleIcon className="w-5 h-5 mr-2" />
                     Nuevo Usuario
                 </button>
@@ -74,7 +140,7 @@ export const SecurityModule: React.FC = () => {
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200">
-                        {MOCK_SYSTEM_USERS.map(user => (
+                        {users.map(user => (
                             <tr key={user.id}>
                                 <td className="px-6 py-4 font-medium text-black">{user.name}</td>
                                 <td className="px-6 py-4 text-sm text-gray-700">{user.email}</td>
@@ -85,7 +151,7 @@ export const SecurityModule: React.FC = () => {
                                 </td>
                                 <td className="px-6 py-4 text-sm text-gray-700">{new Date(user.lastAccess).toLocaleString()}</td>
                                 <td className="px-6 py-4">
-                                    <button className="text-blue-600 hover:underline text-sm font-medium">Editar Permisos</button>
+                                    <button onClick={() => { setEditingUser(user); setIsModalOpen(true); }} className="text-blue-600 hover:underline text-sm font-medium">Editar Permisos</button>
                                 </td>
                             </tr>
                         ))}
@@ -93,5 +159,45 @@ export const SecurityModule: React.FC = () => {
                 </table>
              </div>
         </div>
+    );
+};
+
+const UserForm: React.FC<{user: SystemUser | null, onSave: (user: SystemUser) => void, onCancel: () => void}> = ({ user, onSave, onCancel }) => {
+    const [formData, setFormData] = useState({
+        name: user?.name || '',
+        email: user?.email || '',
+        role: user?.role || SystemRole.TEACHER,
+    });
+    
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        onSave({
+            id: user?.id || Date.now(),
+            ...formData,
+            lastAccess: user?.lastAccess || new Date().toISOString()
+        });
+    };
+
+    return (
+        <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+                <label className="block text-sm font-medium text-gray-700">Nombre</label>
+                <input value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} type="text" required className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"/>
+            </div>
+             <div>
+                <label className="block text-sm font-medium text-gray-700">Email</label>
+                <input value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} type="email" required className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"/>
+            </div>
+             <div>
+                <label className="block text-sm font-medium text-gray-700">Rol</label>
+                <select value={formData.role} onChange={e => setFormData({...formData, role: e.target.value as SystemRole})} required className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
+                    {Object.values(SystemRole).map(role => <option key={role} value={role}>{role}</option>)}
+                </select>
+            </div>
+            <div className="flex justify-end pt-4 space-x-2">
+                <button type="button" onClick={onCancel} className="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg font-semibold hover:bg-gray-300">Cancelar</button>
+                <button type="submit" className="bg-[#FF7B10] text-white px-4 py-2 rounded-lg font-semibold hover:bg-[#E66A00]">Guardar Usuario</button>
+            </div>
+        </form>
     );
 };
