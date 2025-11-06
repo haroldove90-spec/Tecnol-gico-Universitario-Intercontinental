@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { MOCK_GROUPS, MOCK_TEACHERS, MOCK_USERS, MOCK_SUBJECTS, MOCK_CAREERS, MOCK_EDUCACION_SUBJECTS } from '../../constants';
 import { Group } from '../../types';
 import { PlusCircleIcon, DocumentTextIcon, PencilIcon, TrashIcon } from '../../components/icons';
@@ -12,12 +12,7 @@ interface CurriculumSubject {
   liga: string;
 }
 
-const semesterHeadings: { [key: string]: string } = {
-    '1': 'PRIMER CUATRIMESTRE', '2': 'SEGUNDO CUATRIMESTRE', '3': 'TERCER CUATRIMESTRE',
-    '4': 'CUARTO CUATRIMESTRE', '5': 'QUINTO CUATRIMESTRE', '6': 'SEXTO CUATRIMESTRE',
-    '7': 'SEPTIMO CUATRIMESTRE', '8': 'OCTAVO CUATRIMESTRE', '9': 'NOVENO CUATRIMESTRE',
-    '10': 'DÉCIMO CUATRIMESTRE', '11': 'ONCEAVO CUATRIMESTRE', '12': 'DOCEAVO CUATRIMESTRE'
-};
+type CurriculumSubjectWithSemester = CurriculumSubject & { semester: string };
 
 const INITIAL_FORM_STATE = {
     semester: '1',
@@ -39,15 +34,15 @@ export const CareersModule: React.FC = () => {
     });
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-    const [editingSubject, setEditingSubject] = useState<(CurriculumSubject & { semester: string }) | null>(null);
+    const [editingSubject, setEditingSubject] = useState<CurriculumSubjectWithSemester | null>(null);
     const [newSubjectData, setNewSubjectData] = useState(INITIAL_FORM_STATE);
 
     useEffect(() => {
         localStorage.setItem('educacionCurriculum', JSON.stringify(curriculum));
     }, [curriculum]);
 
-    const handleOpenEditModal = (subject: CurriculumSubject, semester: string) => {
-        setEditingSubject({ ...subject, semester });
+    const handleOpenEditModal = (subject: CurriculumSubjectWithSemester) => {
+        setEditingSubject(subject);
         setIsEditModalOpen(true);
     };
 
@@ -56,7 +51,7 @@ export const CareersModule: React.FC = () => {
         setEditingSubject(null);
     };
     
-    const handleNewSubjectChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleNewSubjectChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
         setNewSubjectData(prev => ({...prev, [name]: value}));
     };
@@ -98,14 +93,15 @@ export const CareersModule: React.FC = () => {
         
         setCurriculum(prev => {
             const newCurriculum = { ...prev };
-            const oldSemesterSubjects = newCurriculum[originalSemester].filter(s => s.id !== editingSubject.id);
+            // Remove from the old semester
+            const oldSemesterSubjects = (newCurriculum[originalSemester] || []).filter(s => s.id !== editingSubject.id);
 
             if (oldSemesterSubjects.length === 0) {
                 delete newCurriculum[originalSemester];
             } else {
                 newCurriculum[originalSemester] = oldSemesterSubjects;
             }
-
+            // Add to the new semester
             const newSemesterSubjects = newCurriculum[newSemester] ? [...newCurriculum[newSemester], updatedSubject] : [updatedSubject];
             newCurriculum[newSemester] = newSemesterSubjects;
             
@@ -118,7 +114,7 @@ export const CareersModule: React.FC = () => {
         if (window.confirm('¿Estás seguro de que quieres eliminar esta materia?')) {
             setCurriculum(prev => {
                 const newCurriculum = { ...prev };
-                const semesterSubjects = newCurriculum[semester].filter(s => s.id !== subjectId);
+                const semesterSubjects = (newCurriculum[semester] || []).filter(s => s.id !== subjectId);
                 if (semesterSubjects.length > 0) {
                     newCurriculum[semester] = semesterSubjects;
                 } else {
@@ -129,7 +125,20 @@ export const CareersModule: React.FC = () => {
         }
     };
     
-    const sortedSemesters = Object.keys(curriculum).sort((a, b) => parseInt(a) - parseInt(b));
+    const allSubjects = useMemo(() => {
+        // FIX: The curriculum data from localStorage might be malformed (e.g., null, or not an object, or its values are not arrays).
+        // Added checks to prevent runtime errors and fix the TypeScript error "Property 'map' does not exist on type 'unknown'".
+        return Object.entries(curriculum || {})
+            .flatMap(([semester, subjects]) =>
+                Array.isArray(subjects) ? subjects.map(subject => ({ ...subject, semester })) : []
+            )
+            .sort((a, b) => {
+                const semesterDiff = parseInt(a.semester) - parseInt(b.semester);
+                if (semesterDiff !== 0) return semesterDiff;
+                return a.numero.localeCompare(b.numero);
+            });
+    }, [curriculum]);
+
 
     return (
         <div className="space-y-8">
@@ -192,62 +201,55 @@ export const CareersModule: React.FC = () => {
             
             <div className="flex justify-between items-center mb-6">
                 <h2 className="text-2xl font-semibold text-gray-700">Plan de Estudios - Licenciatura en Educación</h2>
-                <button onClick={() => setIsAddModalOpen(true)} className="flex items-center bg-[#FF7B10] text-white px-4 py-2 rounded-lg font-semibold hover:bg-[#E66A00] transition-colors">
-                    <PlusCircleIcon className="w-5 h-5 mr-2" />
-                    Agregar Materia
-                </button>
             </div>
             
-            <div className="space-y-6">
-                {sortedSemesters.length > 0 ? sortedSemesters.map(semester => (
-                    <div key={semester}>
-                        <h3 className="text-md font-bold text-white bg-gray-600 p-2 text-center">{semesterHeadings[semester] || `CUATRIMESTRE ${semester}`}</h3>
-                        <div className="overflow-x-auto bg-white rounded-b-lg shadow">
-                            <table className="w-full text-sm border-collapse">
-                                <thead className="bg-gray-100">
-                                    <tr>
-                                        <th className="border-b border-gray-300 p-3 font-semibold text-left text-black w-2/12">NUMERO</th>
-                                        <th className="border-b border-gray-300 p-3 font-semibold text-left text-black w-4/12">MATERIA</th>
-                                        <th className="border-b border-gray-300 p-3 font-semibold text-left text-black w-2/12">TÍTULO</th>
-                                        <th className="border-b border-gray-300 p-3 font-semibold text-left text-black w-3/12">LIGA</th>
-                                        <th className="border-b border-gray-300 p-3 font-semibold text-left text-black w-1/12">ACCIONES</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {curriculum[semester].map(subject => (
-                                    <tr key={subject.id} className="hover:bg-gray-50">
-                                        <td className="border-b border-gray-200 p-3">{subject.numero}</td>
-                                        <td className="border-b border-gray-200 p-3">{subject.materia}</td>
-                                        <td className="border-b border-gray-200 p-3">{subject.titulo}</td>
-                                        <td className="border-b border-gray-200 p-3">
-                                            <div className="flex items-center">
-                                                <DocumentTextIcon className="w-4 h-4 mr-2 text-gray-400 flex-shrink-0" />
-                                                <span className="truncate text-gray-700">{subject.liga}</span>
-                                            </div>
-                                        </td>
-                                        <td className="border-b border-gray-200 p-3">
-                                            <div className="flex items-center space-x-2">
-                                                <button onClick={() => handleOpenEditModal(subject, semester)} className="text-gray-500 hover:text-blue-600 p-1" aria-label="Editar materia">
-                                                    <PencilIcon className="w-4 h-4" />
-                                                </button>
-                                                <button onClick={() => handleDeleteSubject(subject.id, semester)} className="text-gray-500 hover:text-red-600 p-1" aria-label="Eliminar materia">
-                                                    <TrashIcon className="w-4 h-4" />
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                )) : (
-                     <div className="text-center py-16 bg-white rounded-lg shadow">
-                        <h3 className="text-xl font-semibold text-black">No hay materias en el plan de estudios.</h3>
-                        <p className="text-gray-600 mt-2">Usa el botón "Agregar Materia" para empezar a construir el currículum.</p>
-                    </div>
-                )}
-            </div>
+            {allSubjects.length > 0 ? (
+                <div className="overflow-x-auto bg-white rounded-lg shadow">
+                    <table className="w-full text-sm border-collapse">
+                        <thead className="bg-gray-100">
+                            <tr>
+                                <th className="border-b border-gray-300 p-3 font-semibold text-left text-black w-[10%]">CUATRIMESTRE</th>
+                                <th className="border-b border-gray-300 p-3 font-semibold text-left text-black w-[15%]">NUMERO</th>
+                                <th className="border-b border-gray-300 p-3 font-semibold text-left text-black w-[30%]">MATERIA</th>
+                                <th className="border-b border-gray-300 p-3 font-semibold text-left text-black w-[15%]">TÍTULO</th>
+                                <th className="border-b border-gray-300 p-3 font-semibold text-left text-black w-[20%]">LIGA</th>
+                                <th className="border-b border-gray-300 p-3 font-semibold text-left text-black w-[10%]">ACCIONES</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {allSubjects.map(subject => (
+                            <tr key={subject.id} className="hover:bg-gray-50">
+                                <td className="border-b border-gray-200 p-3 text-center font-medium">{subject.semester}</td>
+                                <td className="border-b border-gray-200 p-3">{subject.numero}</td>
+                                <td className="border-b border-gray-200 p-3">{subject.materia}</td>
+                                <td className="border-b border-gray-200 p-3">{subject.titulo}</td>
+                                <td className="border-b border-gray-200 p-3">
+                                    <div className="flex items-center">
+                                        <DocumentTextIcon className="w-4 h-4 mr-2 text-gray-400 flex-shrink-0" />
+                                        <span className="truncate text-gray-700">{subject.liga}</span>
+                                    </div>
+                                </td>
+                                <td className="border-b border-gray-200 p-3">
+                                    <div className="flex items-center space-x-2">
+                                        <button onClick={() => handleOpenEditModal(subject)} className="text-gray-500 hover:text-blue-600 p-1" aria-label="Editar materia">
+                                            <PencilIcon className="w-4 h-4" />
+                                        </button>
+                                        <button onClick={() => handleDeleteSubject(subject.id, subject.semester)} className="text-gray-500 hover:text-red-600 p-1" aria-label="Eliminar materia">
+                                            <TrashIcon className="w-4 h-4" />
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            ) : (
+                <div className="text-center py-16 bg-white rounded-lg shadow">
+                    <h3 className="text-xl font-semibold text-black">No hay materias en el plan de estudios.</h3>
+                    <p className="text-gray-600 mt-2">Usa el botón "Agregar Materia" para empezar a construir el currículum.</p>
+                </div>
+            )}
         </div>
     );
 };
