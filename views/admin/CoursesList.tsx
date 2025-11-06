@@ -20,45 +20,19 @@ const semesterHeadings: { [key: string]: string } = {
 };
 
 export const CareersModule: React.FC = () => {
-    const [curriculum, setCurriculum] = useState<Record<string, CurriculumSubject[]>>({});
+    const [curriculum, setCurriculum] = useState<Record<string, CurriculumSubject[]>>(() => {
+        try {
+            const savedData = localStorage.getItem('educacionCurriculum');
+            return savedData ? JSON.parse(savedData) : {};
+        } catch (error) {
+            console.error("Failed to parse curriculum from localStorage", error);
+            return {};
+        }
+    });
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
     useEffect(() => {
-        const initializeCurriculum = () => {
-            const initialCurriculum: Record<string, CurriculumSubject[]> = {};
-            Object.keys(MOCK_EDUCACION_SUBJECTS).forEach(semesterKey => {
-                const semester = parseInt(semesterKey, 10);
-                initialCurriculum[semesterKey] = MOCK_EDUCACION_SUBJECTS[semester as keyof typeof MOCK_EDUCACION_SUBJECTS].map(subject => ({
-                    id: subject.key,
-                    numero: subject.key,
-                    materia: subject.name,
-                    titulo: subject.moduleTitle,
-                    liga: subject.fileLink,
-                }));
-            });
-            setCurriculum(initialCurriculum);
-        };
-
-        try {
-            const savedData = localStorage.getItem('educacionCurriculum');
-            if (savedData) {
-                const parsedData = JSON.parse(savedData);
-                if (Object.keys(parsedData).length > 0) {
-                    setCurriculum(parsedData);
-                    return;
-                }
-            }
-            initializeCurriculum();
-        } catch (error) {
-            console.error("Failed to parse curriculum from localStorage", error);
-            initializeCurriculum();
-        }
-    }, []);
-
-    useEffect(() => {
-        if (Object.keys(curriculum).length > 0) {
-            localStorage.setItem('educacionCurriculum', JSON.stringify(curriculum));
-        }
+        localStorage.setItem('educacionCurriculum', JSON.stringify(curriculum));
     }, [curriculum]);
 
     const handleAddSubject = (event: React.FormEvent<HTMLFormElement>) => {
@@ -68,7 +42,7 @@ export const CareersModule: React.FC = () => {
         const numero = formData.get('numero') as string;
 
         const newSubject: CurriculumSubject = {
-            id: numero || Date.now().toString(),
+            id: Date.now().toString(), // Ensure unique ID to prevent React key conflicts
             numero,
             materia: formData.get('materia') as string,
             titulo: formData.get('titulo') as string,
@@ -146,10 +120,10 @@ export const CareersModule: React.FC = () => {
                                         <td className="border-b border-gray-200 p-3">{subject.materia}</td>
                                         <td className="border-b border-gray-200 p-3">{subject.titulo}</td>
                                         <td className="border-b border-gray-200 p-3">
-                                            <a href="#" className="flex items-center text-red-600 hover:underline" onClick={(e) => e.preventDefault()}>
-                                                <DocumentTextIcon className="w-4 h-4 mr-1 text-red-500 flex-shrink-0" />
-                                                <span className="truncate">{subject.liga}</span>
-                                            </a>
+                                            <div className="flex items-center">
+                                                <DocumentTextIcon className="w-4 h-4 mr-2 text-gray-400 flex-shrink-0" />
+                                                <span className="truncate text-gray-700">{subject.liga}</span>
+                                            </div>
                                         </td>
                                     </tr>
                                     ))}
