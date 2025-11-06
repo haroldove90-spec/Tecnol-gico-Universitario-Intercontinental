@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { MOCK_GROUPS, MOCK_TEACHERS, MOCK_USERS, MOCK_SUBJECTS, MOCK_CAREERS, MOCK_EDUCACION_SUBJECTS } from '../../constants';
 import { Group } from '../../types';
-import { PlusCircleIcon, DocumentTextIcon } from '../../components/icons';
+import { PlusCircleIcon, DocumentTextIcon, PencilIcon, TrashIcon } from '../../components/icons';
 import Modal from '../../components/Modal';
 
 interface CurriculumSubject {
@@ -19,6 +19,14 @@ const semesterHeadings: { [key: string]: string } = {
     '10': 'DÉCIMO CUATRIMESTRE', '11': 'ONCEAVO CUATRIMESTRE', '12': 'DOCEAVO CUATRIMESTRE'
 };
 
+const INITIAL_FORM_STATE = {
+    semester: '1',
+    numero: '',
+    materia: '',
+    titulo: '',
+    liga: '',
+};
+
 export const CareersModule: React.FC = () => {
     const [curriculum, setCurriculum] = useState<Record<string, CurriculumSubject[]>>(() => {
         try {
@@ -30,33 +38,95 @@ export const CareersModule: React.FC = () => {
         }
     });
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [editingSubject, setEditingSubject] = useState<(CurriculumSubject & { semester: string }) | null>(null);
+    const [newSubjectData, setNewSubjectData] = useState(INITIAL_FORM_STATE);
 
     useEffect(() => {
         localStorage.setItem('educacionCurriculum', JSON.stringify(curriculum));
     }, [curriculum]);
 
+    const handleOpenEditModal = (subject: CurriculumSubject, semester: string) => {
+        setEditingSubject({ ...subject, semester });
+        setIsEditModalOpen(true);
+    };
+
+    const handleCloseEditModal = () => {
+        setIsEditModalOpen(false);
+        setEditingSubject(null);
+    };
+    
+    const handleNewSubjectChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setNewSubjectData(prev => ({...prev, [name]: value}));
+    };
+
     const handleAddSubject = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        const formData = new FormData(event.currentTarget);
-        const semester = formData.get('semester') as string;
-        const numero = formData.get('numero') as string;
+        
+        const { semester, ...subjectDetails } = newSubjectData;
 
         const newSubject: CurriculumSubject = {
-            id: Date.now().toString(), // Ensure unique ID to prevent React key conflicts
-            numero,
+            id: crypto.randomUUID(),
+            ...subjectDetails,
+        };
+
+        setCurriculum(prev => {
+            const semesterSubjects = prev[semester] ? [...prev[semester], newSubject] : [newSubject];
+            return { ...prev, [semester]: semesterSubjects };
+        });
+        
+        setNewSubjectData(INITIAL_FORM_STATE);
+        setIsAddModalOpen(false);
+    };
+
+    const handleUpdateSubject = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        if (!editingSubject) return;
+
+        const formData = new FormData(event.currentTarget);
+        const newSemester = formData.get('semester') as string;
+        const originalSemester = editingSubject.semester;
+
+        const updatedSubject: CurriculumSubject = {
+            id: editingSubject.id,
+            numero: formData.get('numero') as string,
             materia: formData.get('materia') as string,
             titulo: formData.get('titulo') as string,
             liga: formData.get('liga') as string,
         };
-
+        
         setCurriculum(prev => {
             const newCurriculum = { ...prev };
-            const semesterSubjects = newCurriculum[semester] ? [...newCurriculum[semester]] : [];
-            semesterSubjects.push(newSubject);
-            newCurriculum[semester] = semesterSubjects;
+            const oldSemesterSubjects = newCurriculum[originalSemester].filter(s => s.id !== editingSubject.id);
+
+            if (oldSemesterSubjects.length === 0) {
+                delete newCurriculum[originalSemester];
+            } else {
+                newCurriculum[originalSemester] = oldSemesterSubjects;
+            }
+
+            const newSemesterSubjects = newCurriculum[newSemester] ? [...newCurriculum[newSemester], updatedSubject] : [updatedSubject];
+            newCurriculum[newSemester] = newSemesterSubjects;
+            
             return newCurriculum;
         });
-        setIsAddModalOpen(false);
+        handleCloseEditModal();
+    };
+
+    const handleDeleteSubject = (subjectId: string, semester: string) => {
+        if (window.confirm('¿Estás seguro de que quieres eliminar esta materia?')) {
+            setCurriculum(prev => {
+                const newCurriculum = { ...prev };
+                const semesterSubjects = newCurriculum[semester].filter(s => s.id !== subjectId);
+                if (semesterSubjects.length > 0) {
+                    newCurriculum[semester] = semesterSubjects;
+                } else {
+                    delete newCurriculum[semester];
+                }
+                return newCurriculum;
+            });
+        }
     };
     
     const sortedSemesters = Object.keys(curriculum).sort((a, b) => parseInt(a) - parseInt(b));
@@ -67,28 +137,57 @@ export const CareersModule: React.FC = () => {
                 <form onSubmit={handleAddSubject} className="space-y-4">
                     <div>
                         <label className="block text-sm font-medium text-gray-700">Cuatrimestre</label>
-                        <input name="semester" type="number" min="1" max="12" required className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary text-black"/>
+                        <input name="semester" type="number" min="1" max="12" required value={newSubjectData.semester} onChange={handleNewSubjectChange} className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary text-black"/>
                     </div>
                     <div>
                         <label className="block text-sm font-medium text-gray-700">Número</label>
-                        <input name="numero" type="text" placeholder="E0102" required className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary text-black"/>
+                        <input name="numero" type="text" placeholder="E0102" required value={newSubjectData.numero} onChange={handleNewSubjectChange} className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary text-black"/>
                     </div>
                      <div>
                         <label className="block text-sm font-medium text-gray-700">Materia</label>
-                        <input name="materia" type="text" required className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary text-black"/>
+                        <input name="materia" type="text" required value={newSubjectData.materia} onChange={handleNewSubjectChange} className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary text-black"/>
                     </div>
                      <div>
                         <label className="block text-sm font-medium text-gray-700">Título</label>
-                        <input name="titulo" type="text" placeholder="Módulo I" required className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary text-black"/>
+                        <input name="titulo" type="text" placeholder="Módulo I" required value={newSubjectData.titulo} onChange={handleNewSubjectChange} className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary text-black"/>
                     </div>
                      <div>
                         <label className="block text-sm font-medium text-gray-700">Liga</label>
-                        <input name="liga" type="text" required className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary text-black"/>
+                        <input name="liga" type="text" required value={newSubjectData.liga} onChange={handleNewSubjectChange} className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary text-black"/>
                     </div>
                     <div className="flex justify-end pt-4">
                         <button type="submit" className="bg-[#FF7B10] text-white px-4 py-2 rounded-lg font-semibold hover:bg-[#E66A00]">Guardar Materia</button>
                     </div>
                 </form>
+            </Modal>
+             <Modal isOpen={isEditModalOpen} onClose={handleCloseEditModal} title="Editar Materia">
+                {editingSubject && (
+                    <form onSubmit={handleUpdateSubject} className="space-y-4">
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700">Cuatrimestre</label>
+                            <input name="semester" type="number" min="1" max="12" required defaultValue={editingSubject.semester} className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary text-black"/>
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700">Número</label>
+                            <input name="numero" type="text" placeholder="E0102" required defaultValue={editingSubject.numero} className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary text-black"/>
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700">Materia</label>
+                            <input name="materia" type="text" required defaultValue={editingSubject.materia} className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary text-black"/>
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700">Título</label>
+                            <input name="titulo" type="text" placeholder="Módulo I" required defaultValue={editingSubject.titulo} className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary text-black"/>
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700">Liga</label>
+                            <input name="liga" type="text" required defaultValue={editingSubject.liga} className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary text-black"/>
+                        </div>
+                        <div className="flex justify-end pt-4">
+                            <button type="submit" className="bg-[#FF7B10] text-white px-4 py-2 rounded-lg font-semibold hover:bg-[#E66A00]">Guardar Cambios</button>
+                        </div>
+                    </form>
+                )}
             </Modal>
             
             <div className="flex justify-between items-center mb-6">
@@ -107,10 +206,11 @@ export const CareersModule: React.FC = () => {
                             <table className="w-full text-sm border-collapse">
                                 <thead className="bg-gray-100">
                                     <tr>
-                                        <th className="border-b border-gray-300 p-3 font-semibold text-left text-black w-1/6">NUMERO</th>
-                                        <th className="border-b border-gray-300 p-3 font-semibold text-left text-black w-2/6">MATERIA</th>
-                                        <th className="border-b border-gray-300 p-3 font-semibold text-left text-black w-1/6">TÍTULO</th>
-                                        <th className="border-b border-gray-300 p-3 font-semibold text-left text-black w-2/6">LIGA</th>
+                                        <th className="border-b border-gray-300 p-3 font-semibold text-left text-black w-2/12">NUMERO</th>
+                                        <th className="border-b border-gray-300 p-3 font-semibold text-left text-black w-4/12">MATERIA</th>
+                                        <th className="border-b border-gray-300 p-3 font-semibold text-left text-black w-2/12">TÍTULO</th>
+                                        <th className="border-b border-gray-300 p-3 font-semibold text-left text-black w-3/12">LIGA</th>
+                                        <th className="border-b border-gray-300 p-3 font-semibold text-left text-black w-1/12">ACCIONES</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -123,6 +223,16 @@ export const CareersModule: React.FC = () => {
                                             <div className="flex items-center">
                                                 <DocumentTextIcon className="w-4 h-4 mr-2 text-gray-400 flex-shrink-0" />
                                                 <span className="truncate text-gray-700">{subject.liga}</span>
+                                            </div>
+                                        </td>
+                                        <td className="border-b border-gray-200 p-3">
+                                            <div className="flex items-center space-x-2">
+                                                <button onClick={() => handleOpenEditModal(subject, semester)} className="text-gray-500 hover:text-blue-600 p-1" aria-label="Editar materia">
+                                                    <PencilIcon className="w-4 h-4" />
+                                                </button>
+                                                <button onClick={() => handleDeleteSubject(subject.id, semester)} className="text-gray-500 hover:text-red-600 p-1" aria-label="Eliminar materia">
+                                                    <TrashIcon className="w-4 h-4" />
+                                                </button>
                                             </div>
                                         </td>
                                     </tr>
