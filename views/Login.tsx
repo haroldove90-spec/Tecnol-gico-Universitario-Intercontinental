@@ -17,7 +17,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
             Tecnológico Universitario Intercontinental
           </h2>
           <p className="mt-2 text-sm text-center text-gray-300">
-            Selecciona tu rol para continuar
+            Inicia sesión como administrador
           </p>
         </div>
         <div className="flex flex-col gap-4 mt-8">
@@ -26,12 +26,6 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
             className="w-full px-4 py-3 font-semibold text-white bg-[#FF7B10] rounded-lg hover:bg-[#E66A00] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-primary focus:ring-white transition duration-300"
           >
             Entrar como Administrador
-          </button>
-          <button
-            onClick={() => onLogin(Role.STUDENT)}
-            className="w-full px-4 py-3 font-semibold text-white bg-transparent border border-gray-400 rounded-lg hover:bg-[#FF7B10] hover:border-[#FF7B10] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-primary focus:ring-gray-400 transition duration-300"
-          >
-            Entrar como Estudiante
           </button>
         </div>
       </div>

@@ -74,7 +74,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
   return (
     <div className="flex h-screen bg-gray-100 font-sans">
       <Sidebar
-        role={user.role}
         activeView={activeView}
         setActiveView={handleSetActiveView}
         onLogout={handleLogoutClick}

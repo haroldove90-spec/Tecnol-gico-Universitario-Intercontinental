@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { User, Role } from './types';
 import { MOCK_USERS } from './constants';
 import AdminDashboard from './views/AdminDashboard';
-import StudentDashboard from './views/StudentDashboard';
 import Login from './views/Login';
 
 const App: React.FC = () => {
@@ -25,10 +24,6 @@ const App: React.FC = () => {
 
   if (currentUser.role === Role.ADMIN) {
     return <AdminDashboard user={currentUser} onLogout={handleLogout} />;
-  }
-
-  if (currentUser.role === Role.STUDENT) {
-    return <StudentDashboard user={currentUser} onLogout={handleLogout} setCurrentUser={setCurrentUser} />;
   }
 
   return null;

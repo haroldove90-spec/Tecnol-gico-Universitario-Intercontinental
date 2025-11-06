@@ -1,7 +1,6 @@
 
 import React, { ReactNode } from 'react';
-import { Role } from '../types';
-import { BookOpenIcon, UsersIcon, DocumentCheckIcon, ArrowLeftOnRectangleIcon, GraduationCapIcon, MagnifyingGlassIcon, UserCircleIcon, CalendarDaysIcon, FolderIcon, ChartBarIcon, ChartPieIcon, BriefcaseIcon, ViewGridIcon, IdentificationIcon, ShieldCheckIcon, DocumentTextIcon } from './icons';
+import { BookOpenIcon, UsersIcon, DocumentCheckIcon, ArrowLeftOnRectangleIcon, CalendarDaysIcon, ChartBarIcon, BriefcaseIcon, ViewGridIcon, IdentificationIcon, ShieldCheckIcon, DocumentTextIcon } from './icons';
 
 interface NavLinkProps {
   icon: ReactNode;
@@ -25,14 +24,13 @@ const NavLink: React.FC<NavLinkProps> = ({ icon, label, isActive, onClick }) => 
 );
 
 interface SidebarProps {
-  role: Role;
   activeView: string;
   setActiveView: (view: string) => void;
   onLogout: () => void;
   isOpen: boolean;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ role, activeView, setActiveView, onLogout, isOpen }) => {
+const Sidebar: React.FC<SidebarProps> = ({ activeView, setActiveView, onLogout, isOpen }) => {
   const logoUrl = "https://tecintercontinental.com.mx/wp-content/uploads/2025/10/Tecnologico-Universitaerio-Intercontinental.png";
 
   const adminLinks = [
@@ -48,17 +46,7 @@ const Sidebar: React.FC<SidebarProps> = ({ role, activeView, setActiveView, onLo
     { id: 'security', label: 'Seguridad y Usuarios', icon: <ShieldCheckIcon className="w-5 h-5" /> },
   ];
 
-  const studentLinks = [
-    { id: 'my-courses', label: 'Mis Cursos', icon: <GraduationCapIcon className="w-5 h-5" /> },
-    { id: 'browse', label: 'Explorar Cursos', icon: <MagnifyingGlassIcon className="w-5 h-5" /> },
-    { id: 'grades', label: 'Calificaciones', icon: <DocumentCheckIcon className="w-5 h-5" /> },
-    { id: 'calendar', label: 'Calendario', icon: <CalendarDaysIcon className="w-5 h-5" /> },
-    { id: 'files', label: 'Archivos Privados', icon: <FolderIcon className="w-5 h-5" /> },
-    { id: 'reports', label: 'Informes', icon: <ChartBarIcon className="w-5 h-5" /> },
-    { id: 'profile', label: 'Mi Perfil', icon: <UserCircleIcon className="w-5 h-5" /> },
-  ];
-
-  const links = role === Role.ADMIN ? adminLinks : studentLinks;
+  const links = adminLinks;
 
   return (
     <aside className={`bg-primary text-white w-64 flex-shrink-0 border-r border-gray-700 flex flex-col transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 md:relative absolute inset-y-0 left-0 z-30`}>
