@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { MOCK_GROUPS, MOCK_TEACHERS, MOCK_USERS, MOCK_SUBJECTS, MOCK_CAREERS } from '../../constants';
+import { MOCK_GROUPS, MOCK_TEACHERS, MOCK_USERS, MOCK_SUBJECTS, MOCK_CAREERS, MOCK_EDUCACION_SUBJECTS } from '../../constants';
 import { Group } from '../../types';
 import { PlusCircleIcon, DocumentTextIcon } from '../../components/icons';
 import Modal from '../../components/Modal';
@@ -24,32 +24,34 @@ export const CareersModule: React.FC = () => {
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
     useEffect(() => {
+        const initializeCurriculum = () => {
+            const initialCurriculum: Record<string, CurriculumSubject[]> = {};
+            Object.keys(MOCK_EDUCACION_SUBJECTS).forEach(semesterKey => {
+                const semester = parseInt(semesterKey, 10);
+                initialCurriculum[semesterKey] = MOCK_EDUCACION_SUBJECTS[semester as keyof typeof MOCK_EDUCACION_SUBJECTS].map(subject => ({
+                    id: subject.key,
+                    numero: subject.key,
+                    materia: subject.name,
+                    titulo: subject.moduleTitle,
+                    liga: subject.fileLink,
+                }));
+            });
+            setCurriculum(initialCurriculum);
+        };
+
         try {
             const savedData = localStorage.getItem('educacionCurriculum');
-            if (savedData && Object.keys(JSON.parse(savedData)).length > 0) {
-                setCurriculum(JSON.parse(savedData));
-            } else {
-                setCurriculum({
-                    '1': [{
-                        id: 'E0101',
-                        numero: 'E0101',
-                        materia: 'Filosofia de la educación',
-                        titulo: 'Módulo 1',
-                        liga: 'Filosofia de la educación'
-                    }]
-                });
+            if (savedData) {
+                const parsedData = JSON.parse(savedData);
+                if (Object.keys(parsedData).length > 0) {
+                    setCurriculum(parsedData);
+                    return;
+                }
             }
+            initializeCurriculum();
         } catch (error) {
             console.error("Failed to parse curriculum from localStorage", error);
-             setCurriculum({
-                '1': [{
-                    id: 'E0101',
-                    numero: 'E0101',
-                    materia: 'Filosofia de la educación',
-                    titulo: 'Módulo 1',
-                    liga: 'Filosofia de la educación'
-                }]
-            });
+            initializeCurriculum();
         }
     }, []);
 
