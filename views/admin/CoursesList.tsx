@@ -1,171 +1,169 @@
-import React, { useState } from 'react';
-import { MOCK_CAREERS, MOCK_SUBJECTS, MOCK_GROUPS, MOCK_TEACHERS, MOCK_USERS } from '../../constants';
-import { Career, Subject, Group } from '../../types';
-import { PlusCircleIcon } from '../../components/icons';
+import React, { useState, useEffect } from 'react';
+import { MOCK_GROUPS, MOCK_TEACHERS, MOCK_USERS, MOCK_SUBJECTS, MOCK_CAREERS } from '../../constants';
+import { Group } from '../../types';
+import { PlusCircleIcon, DocumentTextIcon } from '../../components/icons';
 import Modal from '../../components/Modal';
 
+interface CurriculumSubject {
+  id: string;
+  numero: string;
+  materia: string;
+  titulo: string;
+  liga: string;
+}
+
+const semesterHeadings: { [key: string]: string } = {
+    '1': 'PRIMER CUATRIMESTRE', '2': 'SEGUNDO CUATRIMESTRE', '3': 'TERCER CUATRIMESTRE',
+    '4': 'CUARTO CUATRIMESTRE', '5': 'QUINTO CUATRIMESTRE', '6': 'SEXTO CUATRIMESTRE',
+    '7': 'SEPTIMO CUATRIMESTRE', '8': 'OCTAVO CUATRIMESTRE', '9': 'NOVENO CUATRIMESTRE',
+    '10': 'DÉCIMO CUATRIMESTRE', '11': 'ONCEAVO CUATRIMESTRE', '12': 'DOCEAVO CUATRIMESTRE'
+};
+
 export const CareersModule: React.FC = () => {
-  const [careers, setCareers] = useState<Career[]>(MOCK_CAREERS);
-  const [subjects, setSubjects] = useState<Subject[]>(MOCK_SUBJECTS);
-  const [isCareerModalOpen, setIsCareerModalOpen] = useState(false);
-  const [isSubjectModalOpen, setIsSubjectModalOpen] = useState(false);
+    const [curriculum, setCurriculum] = useState<Record<string, CurriculumSubject[]>>({});
+    const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
-  const handleAddCareer = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const newCareer: Career = {
-      id: Date.now(),
-      name: formData.get('name') as string,
-      planCode: formData.get('planCode') as string,
-      totalCredits: parseInt(formData.get('totalCredits') as string, 10),
-    };
-    setCareers(prev => [newCareer, ...prev]);
-    setIsCareerModalOpen(false);
-  };
-  
-  const handleAddSubject = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const newSubject: Subject = {
-        id: Date.now(),
-        key: formData.get('key') as string,
-        name: formData.get('name') as string,
-        credits: parseInt(formData.get('credits') as string),
-        theoryHours: parseInt(formData.get('theoryHours') as string),
-        practiceHours: parseInt(formData.get('practiceHours') as string),
-        semester: parseInt(formData.get('semester') as string),
-        careerId: parseInt(formData.get('careerId') as string),
-    };
-    setSubjects(prev => [newSubject, ...prev]);
-    setIsSubjectModalOpen(false);
-  };
+    useEffect(() => {
+        try {
+            const savedData = localStorage.getItem('educacionCurriculum');
+            if (savedData && Object.keys(JSON.parse(savedData)).length > 0) {
+                setCurriculum(JSON.parse(savedData));
+            } else {
+                setCurriculum({
+                    '1': [{
+                        id: 'E0101',
+                        numero: 'E0101',
+                        materia: 'Filosofia de la educación',
+                        titulo: 'Módulo 1',
+                        liga: 'Filosofia de la educación'
+                    }]
+                });
+            }
+        } catch (error) {
+            console.error("Failed to parse curriculum from localStorage", error);
+             setCurriculum({
+                '1': [{
+                    id: 'E0101',
+                    numero: 'E0101',
+                    materia: 'Filosofia de la educación',
+                    titulo: 'Módulo 1',
+                    liga: 'Filosofia de la educación'
+                }]
+            });
+        }
+    }, []);
 
-  return (
-    <div className="space-y-8">
-      <Modal isOpen={isCareerModalOpen} onClose={() => setIsCareerModalOpen(false)} title="Agregar Nueva Carrera">
-        <form onSubmit={handleAddCareer} className="space-y-4">
-            <div>
-                <label className="block text-sm font-medium text-gray-700">Nombre de la Carrera</label>
-                <input name="name" type="text" required className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"/>
+    useEffect(() => {
+        if (Object.keys(curriculum).length > 0) {
+            localStorage.setItem('educacionCurriculum', JSON.stringify(curriculum));
+        }
+    }, [curriculum]);
+
+    const handleAddSubject = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        const formData = new FormData(event.currentTarget);
+        const semester = formData.get('semester') as string;
+        const numero = formData.get('numero') as string;
+
+        const newSubject: CurriculumSubject = {
+            id: numero || Date.now().toString(),
+            numero,
+            materia: formData.get('materia') as string,
+            titulo: formData.get('titulo') as string,
+            liga: formData.get('liga') as string,
+        };
+
+        setCurriculum(prev => {
+            const newCurriculum = { ...prev };
+            const semesterSubjects = newCurriculum[semester] ? [...newCurriculum[semester]] : [];
+            semesterSubjects.push(newSubject);
+            newCurriculum[semester] = semesterSubjects;
+            return newCurriculum;
+        });
+        setIsAddModalOpen(false);
+    };
+    
+    const sortedSemesters = Object.keys(curriculum).sort((a, b) => parseInt(a) - parseInt(b));
+
+    return (
+        <div className="space-y-8">
+            <Modal isOpen={isAddModalOpen} onClose={() => setIsAddModalOpen(false)} title="Agregar Nueva Materia">
+                <form onSubmit={handleAddSubject} className="space-y-4">
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700">Cuatrimestre</label>
+                        <input name="semester" type="number" min="1" max="12" required className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary text-black"/>
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700">Número</label>
+                        <input name="numero" type="text" placeholder="E0102" required className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary text-black"/>
+                    </div>
+                     <div>
+                        <label className="block text-sm font-medium text-gray-700">Materia</label>
+                        <input name="materia" type="text" required className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary text-black"/>
+                    </div>
+                     <div>
+                        <label className="block text-sm font-medium text-gray-700">Título</label>
+                        <input name="titulo" type="text" placeholder="Módulo I" required className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary text-black"/>
+                    </div>
+                     <div>
+                        <label className="block text-sm font-medium text-gray-700">Liga</label>
+                        <input name="liga" type="text" required className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary text-black"/>
+                    </div>
+                    <div className="flex justify-end pt-4">
+                        <button type="submit" className="bg-[#FF7B10] text-white px-4 py-2 rounded-lg font-semibold hover:bg-[#E66A00]">Guardar Materia</button>
+                    </div>
+                </form>
+            </Modal>
+            
+            <div className="flex justify-between items-center mb-6">
+                <h2 className="text-2xl font-semibold text-gray-700">Plan de Estudios - Licenciatura en Educación</h2>
+                <button onClick={() => setIsAddModalOpen(true)} className="flex items-center bg-[#FF7B10] text-white px-4 py-2 rounded-lg font-semibold hover:bg-[#E66A00] transition-colors">
+                    <PlusCircleIcon className="w-5 h-5 mr-2" />
+                    Agregar Materia
+                </button>
             </div>
-            <div>
-                <label className="block text-sm font-medium text-gray-700">Clave del Plan</label>
-                <input name="planCode" type="text" required className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"/>
+            
+            <div className="space-y-6">
+                {sortedSemesters.length > 0 ? sortedSemesters.map(semester => (
+                    <div key={semester}>
+                        <h3 className="text-md font-bold text-white bg-gray-600 p-2 text-center">{semesterHeadings[semester] || `CUATRIMESTRE ${semester}`}</h3>
+                        <div className="overflow-x-auto bg-white rounded-b-lg shadow">
+                            <table className="w-full text-sm border-collapse">
+                                <thead className="bg-gray-100">
+                                    <tr>
+                                        <th className="border-b border-gray-300 p-3 font-semibold text-left text-black w-1/6">NUMERO</th>
+                                        <th className="border-b border-gray-300 p-3 font-semibold text-left text-black w-2/6">MATERIA</th>
+                                        <th className="border-b border-gray-300 p-3 font-semibold text-left text-black w-1/6">TÍTULO</th>
+                                        <th className="border-b border-gray-300 p-3 font-semibold text-left text-black w-2/6">LIGA</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {curriculum[semester].map(subject => (
+                                    <tr key={subject.id} className="hover:bg-gray-50">
+                                        <td className="border-b border-gray-200 p-3">{subject.numero}</td>
+                                        <td className="border-b border-gray-200 p-3">{subject.materia}</td>
+                                        <td className="border-b border-gray-200 p-3">{subject.titulo}</td>
+                                        <td className="border-b border-gray-200 p-3">
+                                            <a href="#" className="flex items-center text-red-600 hover:underline" onClick={(e) => e.preventDefault()}>
+                                                <DocumentTextIcon className="w-4 h-4 mr-1 text-red-500 flex-shrink-0" />
+                                                <span className="truncate">{subject.liga}</span>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                )) : (
+                     <div className="text-center py-16 bg-white rounded-lg shadow">
+                        <h3 className="text-xl font-semibold text-black">No hay materias en el plan de estudios.</h3>
+                        <p className="text-gray-600 mt-2">Usa el botón "Agregar Materia" para empezar a construir el currículum.</p>
+                    </div>
+                )}
             </div>
-            <div>
-                <label className="block text-sm font-medium text-gray-700">Créditos Totales</label>
-                <input name="totalCredits" type="number" required className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"/>
-            </div>
-            <div className="flex justify-end pt-4">
-                <button type="submit" className="bg-[#FF7B10] text-white px-4 py-2 rounded-lg font-semibold hover:bg-[#E66A00]">Guardar Carrera</button>
-            </div>
-        </form>
-      </Modal>
-      
-      <Modal isOpen={isSubjectModalOpen} onClose={() => setIsSubjectModalOpen(false)} title="Agregar Nueva Materia">
-        <form onSubmit={handleAddSubject} className="space-y-4">
-             <div>
-                <label className="block text-sm font-medium text-gray-700">Clave</label>
-                <input name="key" type="text" required className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"/>
-            </div>
-             <div>
-                <label className="block text-sm font-medium text-gray-700">Nombre</label>
-                <input name="name" type="text" required className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"/>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-                <div>
-                    <label className="block text-sm font-medium text-gray-700">Créditos</label>
-                    <input name="credits" type="number" required className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"/>
-                </div>
-                <div>
-                    <label className="block text-sm font-medium text-gray-700">Semestre</label>
-                    <input name="semester" type="number" required className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"/>
-                </div>
-                 <div>
-                    <label className="block text-sm font-medium text-gray-700">Horas Teoría</label>
-                    <input name="theoryHours" type="number" required className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"/>
-                </div>
-                 <div>
-                    <label className="block text-sm font-medium text-gray-700">Horas Práctica</label>
-                    <input name="practiceHours" type="number" required className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"/>
-                </div>
-            </div>
-            <div>
-                <label className="block text-sm font-medium text-gray-700">Carrera</label>
-                <select name="careerId" required className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
-                    {careers.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
-                </select>
-            </div>
-             <div className="flex justify-end pt-4">
-                <button type="submit" className="bg-[#FF7B10] text-white px-4 py-2 rounded-lg font-semibold hover:bg-[#E66A00]">Guardar Materia</button>
-            </div>
-        </form>
-      </Modal>
-      
-      <div>
-        <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-semibold text-gray-700">Catálogo de Carreras</h2>
-            <button onClick={() => setIsCareerModalOpen(true)} className="flex items-center bg-[#FF7B10] text-white px-4 py-2 rounded-lg font-semibold hover:bg-[#E66A00] transition-colors">
-                <PlusCircleIcon className="w-5 h-5 mr-2" />
-                Nueva Carrera
-            </button>
         </div>
-        <div className="bg-white rounded-lg shadow overflow-x-auto">
-            <table className="w-full whitespace-nowrap">
-                <thead className="bg-gray-50">
-                    <tr>
-                        <th className="px-6 py-3 text-left text-xs font-semibold text-black uppercase tracking-wider">Nombre de la Carrera</th>
-                        <th className="px-6 py-3 text-left text-xs font-semibold text-black uppercase tracking-wider">Clave del Plan</th>
-                        <th className="px-6 py-3 text-left text-xs font-semibold text-black uppercase tracking-wider">Acciones</th>
-                    </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-200">
-                    {careers.map(career => (
-                        <tr key={career.id}>
-                            <td className="px-6 py-4 font-medium text-black">{career.name}</td>
-                            <td className="px-6 py-4 text-sm text-gray-700">{career.planCode}</td>
-                            <td className="px-6 py-4"><button className="text-blue-600 hover:underline text-sm font-medium">Ver Plan de Estudios</button></td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-        </div>
-      </div>
-      <div>
-        <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-semibold text-gray-700">Catálogo de Materias</h2>
-            <button onClick={() => setIsSubjectModalOpen(true)} className="flex items-center bg-[#FF7B10] text-white px-4 py-2 rounded-lg font-semibold hover:bg-[#E66A00] transition-colors">
-                <PlusCircleIcon className="w-5 h-5 mr-2" />
-                Nueva Materia
-            </button>
-        </div>
-        <div className="bg-white rounded-lg shadow overflow-x-auto">
-            <table className="w-full whitespace-nowrap">
-                <thead className="bg-gray-50">
-                    <tr>
-                        <th className="px-6 py-3 text-left text-xs font-semibold text-black uppercase tracking-wider">Clave</th>
-                        <th className="px-6 py-3 text-left text-xs font-semibold text-black uppercase tracking-wider">Nombre</th>
-                        <th className="px-6 py-3 text-left text-xs font-semibold text-black uppercase tracking-wider">Créditos</th>
-                        <th className="px-6 py-3 text-left text-xs font-semibold text-black uppercase tracking-wider">Semestre</th>
-                        <th className="px-6 py-3 text-left text-xs font-semibold text-black uppercase tracking-wider">Carrera</th>
-                    </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-200">
-                    {subjects.map(subject => (
-                        <tr key={subject.id}>
-                            <td className="px-6 py-4 text-sm font-mono text-gray-700">{subject.key}</td>
-                            <td className="px-6 py-4 font-medium text-black">{subject.name}</td>
-                            <td className="px-6 py-4 text-sm text-gray-700">{subject.credits}</td>
-                            <td className="px-6 py-4 text-sm text-gray-700">{subject.semester}</td>
-                            <td className="px-6 py-4 text-sm text-gray-700">{careers.find(c => c.id === subject.careerId)?.name}</td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-        </div>
-      </div>
-    </div>
-  );
+    );
 };
 
 export const GroupsModule: React.FC = () => {
@@ -205,19 +203,19 @@ export const GroupsModule: React.FC = () => {
                 <form onSubmit={handleAddGroup} className="space-y-4">
                     <div>
                         <label className="block text-sm font-medium text-gray-700">Materia</label>
-                        <select name="subjectId" required className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
+                        <select name="subjectId" required className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary text-black">
                             {MOCK_SUBJECTS.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
                         </select>
                     </div>
                      <div>
                         <label className="block text-sm font-medium text-gray-700">Docente</label>
-                        <select name="teacherId" required className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
+                        <select name="teacherId" required className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary text-black">
                             {MOCK_TEACHERS.map(t => <option key={t.id} value={t.id}>{t.name}</option>)}
                         </select>
                     </div>
                      <div>
                         <label className="block text-sm font-medium text-gray-700">Horario</label>
-                        <input name="schedule" type="text" placeholder="Ej: L-M-V 7:00-9:00" required className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"/>
+                        <input name="schedule" type="text" placeholder="Ej: L-M-V 7:00-9:00" required className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary text-black"/>
                     </div>
                     <div className="flex justify-end pt-4">
                         <button type="submit" className="bg-[#FF7B10] text-white px-4 py-2 rounded-lg font-semibold hover:bg-[#E66A00]">Crear Grupo</button>

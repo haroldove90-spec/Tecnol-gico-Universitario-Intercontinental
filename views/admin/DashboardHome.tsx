@@ -182,15 +182,15 @@ const UserForm: React.FC<{user: SystemUser | null, onSave: (user: SystemUser) =>
         <form onSubmit={handleSubmit} className="space-y-4">
             <div>
                 <label className="block text-sm font-medium text-gray-700">Nombre</label>
-                <input value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} type="text" required className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"/>
+                <input value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} type="text" required className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary text-black"/>
             </div>
              <div>
                 <label className="block text-sm font-medium text-gray-700">Email</label>
-                <input value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} type="email" required className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"/>
+                <input value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} type="email" required className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary text-black"/>
             </div>
              <div>
                 <label className="block text-sm font-medium text-gray-700">Rol</label>
-                <select value={formData.role} onChange={e => setFormData({...formData, role: e.target.value as SystemRole})} required className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
+                <select value={formData.role} onChange={e => setFormData({...formData, role: e.target.value as SystemRole})} required className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary text-black">
                     {Object.values(SystemRole).map(role => <option key={role} value={role}>{role}</option>)}
                 </select>
             </div>

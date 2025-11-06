@@ -42,9 +42,9 @@ const CaptureGradesModal: React.FC<{ group: Group | null; onClose: () => void; o
                         {studentsInGroup.map(student => (
                             <tr key={student.id}>
                                 <td className="px-4 py-2 font-medium">{student.name}</td>
-                                <td className="px-4 py-2"><input type="number" min="0" max="100" className="w-20 text-center border rounded" onChange={(e) => handleGradeChange(student.id, 'p1', e.target.value)} /></td>
-                                <td className="px-4 py-2"><input type="number" min="0" max="100" className="w-20 text-center border rounded" onChange={(e) => handleGradeChange(student.id, 'p2', e.target.value)} /></td>
-                                <td className="px-4 py-2"><input type="number" min="0" max="100" className="w-20 text-center border rounded" onChange={(e) => handleGradeChange(student.id, 'final', e.target.value)} /></td>
+                                <td className="px-4 py-2"><input type="number" min="0" max="100" className="w-20 text-center border rounded text-black" onChange={(e) => handleGradeChange(student.id, 'p1', e.target.value)} /></td>
+                                <td className="px-4 py-2"><input type="number" min="0" max="100" className="w-20 text-center border rounded text-black" onChange={(e) => handleGradeChange(student.id, 'p2', e.target.value)} /></td>
+                                <td className="px-4 py-2"><input type="number" min="0" max="100" className="w-20 text-center border rounded text-black" onChange={(e) => handleGradeChange(student.id, 'final', e.target.value)} /></td>
                             </tr>
                         ))}
                     </tbody>
@@ -203,7 +203,7 @@ export const ReportCardsModule: React.FC = () => {
                  <p className="text-gray-600 mt-2 mb-6">Busca un alumno por matrícula para generar su boleta del periodo actual.</p>
                 <div className="max-w-md mx-auto">
                     <div className="relative">
-                        <input type="search" placeholder="Buscar por matrícula..." onChange={(e) => setSearchQuery(e.target.value)} className="w-full bg-gray-100 border border-gray-300 rounded-lg py-3 pl-5 pr-12 focus:outline-none focus:ring-2 focus:ring-primary/50" />
+                        <input type="search" placeholder="Buscar por matrícula..." onChange={(e) => setSearchQuery(e.target.value)} className="w-full bg-gray-100 border border-gray-300 rounded-lg py-3 pl-5 pr-12 focus:outline-none focus:ring-2 focus:ring-primary/50 text-black" />
                         <button onClick={handleSearch} className="absolute inset-y-0 right-0 px-4 flex items-center bg-primary text-white rounded-r-lg font-semibold hover:bg-opacity-90">
                             Generar
                         </button>

@@ -43,31 +43,31 @@ const StudentForm: React.FC<{ student?: User | null; onSave: (student: User) => 
         <form onSubmit={handleSubmit} className="space-y-4">
             <div>
                 <label className="block text-sm font-medium text-gray-700">Nombre Completo</label>
-                <input name="name" value={formData.name} onChange={handleChange} type="text" required className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"/>
+                <input name="name" value={formData.name} onChange={handleChange} type="text" required className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary text-black"/>
             </div>
             <div>
                 <label className="block text-sm font-medium text-gray-700">Email</label>
-                <input name="email" value={formData.email} onChange={handleChange} type="email" required className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"/>
+                <input name="email" value={formData.email} onChange={handleChange} type="email" required className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary text-black"/>
             </div>
              <div>
                 <label className="block text-sm font-medium text-gray-700">Matrícula</label>
-                <input name="matricula" value={formData.matricula} onChange={handleChange} type="text" required className="mt-1 block w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-md shadow-sm read-only:opacity-60" readOnly/>
+                <input name="matricula" value={formData.matricula} onChange={handleChange} type="text" required className="mt-1 block w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-md shadow-sm read-only:opacity-60 text-black" readOnly/>
             </div>
             <div className="grid grid-cols-2 gap-4">
                 <div>
                     <label className="block text-sm font-medium text-gray-700">Carrera</label>
-                    <select name="careerId" value={formData.careerId} onChange={handleChange} required className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
+                    <select name="careerId" value={formData.careerId} onChange={handleChange} required className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary text-black">
                         {MOCK_CAREERS.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
                     </select>
                 </div>
                 <div>
                     <label className="block text-sm font-medium text-gray-700">Semestre</label>
-                    <input name="semester" value={formData.semester} onChange={handleChange} type="number" min="1" max="12" required className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"/>
+                    <input name="semester" value={formData.semester} onChange={handleChange} type="number" min="1" max="12" required className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary text-black"/>
                 </div>
             </div>
              <div>
                 <label className="block text-sm font-medium text-gray-700">Estatus</label>
-                <select name="status" value={formData.status} onChange={handleChange} required className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
+                <select name="status" value={formData.status} onChange={handleChange} required className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary text-black">
                     {Object.values(StudentStatus).map(s => <option key={s} value={s}>{s}</option>)}
                 </select>
             </div>
@@ -198,7 +198,7 @@ export const KardexModule: React.FC = () => {
                 <h2 className="text-2xl font-semibold text-gray-700">Consulta de Kardex</h2>
                 <div className="w-1/3">
                     <div className="relative">
-                        <input type="search" placeholder="Buscar por matrícula o nombre..." value={searchQuery} onChange={handleSearch} className="w-full bg-white border border-gray-300 rounded-lg py-2 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-primary/50" />
+                        <input type="search" placeholder="Buscar por matrícula o nombre..." value={searchQuery} onChange={handleSearch} className="w-full bg-white border border-gray-300 rounded-lg py-2 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-primary/50 text-black" />
                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <MagnifyingGlassIcon className="w-5 h-5 text-gray-400"/>
                         </div>

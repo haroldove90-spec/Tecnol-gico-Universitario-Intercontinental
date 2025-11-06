@@ -19,15 +19,15 @@ const TeacherForm: React.FC<{ onSave: (teacher: Teacher) => void; onCancel: () =
         <form onSubmit={handleSubmit} className="space-y-4">
              <div>
                 <label className="block text-sm font-medium text-gray-700">Nombre Completo</label>
-                <input name="name" type="text" required className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"/>
+                <input name="name" type="text" required className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary text-black"/>
             </div>
             <div>
                 <label className="block text-sm font-medium text-gray-700">Email</label>
-                <input name="email" type="email" required className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"/>
+                <input name="email" type="email" required className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary text-black"/>
             </div>
             <div>
                 <label className="block text-sm font-medium text-gray-700">ID de Empleado</label>
-                <input name="employeeId" type="text" required className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"/>
+                <input name="employeeId" type="text" required className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary text-black"/>
             </div>
             <div className="flex justify-end pt-4 space-x-2">
                 <button type="button" onClick={onCancel} className="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg font-semibold hover:bg-gray-300">Cancelar</button>
@@ -102,15 +102,15 @@ const PeriodForm: React.FC<{ period?: SchoolPeriod | null, onSave: (period: Scho
         <form onSubmit={handleSubmit} className="space-y-4">
              <div>
                 <label className="block text-sm font-medium text-gray-700">Nombre del Periodo</label>
-                <input value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} type="text" required className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm"/>
+                <input value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} type="text" required className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm text-black"/>
             </div>
             <div>
                 <label className="block text-sm font-medium text-gray-700">Fecha de Inicio</label>
-                <input value={formData.startDate} onChange={e => setFormData({...formData, startDate: e.target.value})} type="date" required className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm"/>
+                <input value={formData.startDate} onChange={e => setFormData({...formData, startDate: e.target.value})} type="date" required className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm text-black"/>
             </div>
             <div>
                 <label className="block text-sm font-medium text-gray-700">Fecha de Fin</label>
-                <input value={formData.endDate} onChange={e => setFormData({...formData, endDate: e.target.value})} type="date" required className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm"/>
+                <input value={formData.endDate} onChange={e => setFormData({...formData, endDate: e.target.value})} type="date" required className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm text-black"/>
             </div>
             <div className="flex justify-end pt-4 space-x-2">
                 <button type="button" onClick={onCancel} className="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg font-semibold hover:bg-gray-300">Cancelar</button>

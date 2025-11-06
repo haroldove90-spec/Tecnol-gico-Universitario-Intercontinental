@@ -83,6 +83,63 @@ export const MOCK_CALENDAR_EVENTS: CalendarEvent[] = [
     { id: 2, title: 'Examen Final - Derecho', date: '2024-07-28', courseId: 1 },
 ];
 
+export const MOCK_EDUCACION_SUBJECTS: Record<number, { key: string; name: string; moduleTitle: string; fileLink: string }[]> = {
+    1: [
+        { key: 'E0101', name: 'Filosofía de la educación', moduleTitle: 'Módulo I', fileLink: 'Filosofía de la educa...' },
+        { key: 'E0102', name: 'Psicología del desarrollo', moduleTitle: 'Módulo I', fileLink: 'Psicología del desar...' },
+        { key: 'E0103', name: 'Comunicación Asertiva', moduleTitle: 'Módulo I', fileLink: 'Comunicación aserti...' },
+        { key: 'E0104', name: 'Historia Universal de la educación', moduleTitle: 'Módulo I', fileLink: 'Historia Universal de...' },
+    ],
+    2: [
+        { key: 'E0201', name: 'Sociología de la educación', moduleTitle: 'Módulo II', fileLink: 'Sociología de la edu...' },
+        { key: 'E0202', name: 'Didáctica general', moduleTitle: 'Módulo II', fileLink: 'Didáctica general.pdf' },
+        { key: 'E0203', name: 'Estrategias de trabajo con grupos', moduleTitle: 'Módulo II', fileLink: 'Estrategias de trabaj...' },
+        { key: 'E0204', name: 'Psicología del aprendizaje', moduleTitle: 'Módulo II', fileLink: 'Psicología del aprend...' },
+    ],
+    3: [
+        { key: 'E0301', name: 'Política y legislación educativa', moduleTitle: 'Módulo III', fileLink: 'Política y legislación ...' },
+        { key: 'E0302', name: 'Historia de la educación en México', moduleTitle: 'Módulo III', fileLink: 'Historia de la educa...' },
+        { key: 'E0303', name: 'Diseño de estrategias y materiales didácticos', moduleTitle: 'Módulo III', fileLink: 'Diseño de estrategia...' },
+        { key: 'E0304', name: 'Programación didáctica', moduleTitle: 'Módulo III', fileLink: 'Programación didáct...' },
+    ],
+    4: [
+        { key: 'E0401', name: 'Investigación Educativa I', moduleTitle: 'Módulo IV', fileLink: 'Investigación Educat...' },
+        { key: 'E0402', name: 'Estadística descriptiva aplicada', moduleTitle: 'Módulo IV', fileLink: 'Estadística descripti...' },
+        { key: 'E0403', name: 'Planeación y evaluación educativa', moduleTitle: 'Módulo IV', fileLink: 'Planeación y evalua...' },
+        { key: 'E0404', name: 'Inclusión educativa y diversidad en el aula', moduleTitle: 'Módulo IV', fileLink: 'Inclusión educativa y...' },
+    ],
+    5: [
+        { key: 'E0501', name: 'Investigación Educativa II', moduleTitle: 'Módulo V', fileLink: 'Investigación Educat...' },
+        { key: 'E0502', name: 'Educación socioemocional', moduleTitle: 'Módulo V', fileLink: 'Educación socioemo...' },
+        { key: 'E0503', name: 'Educación y cultura para la Paz', moduleTitle: 'Módulo V', fileLink: 'Educación y cultura ...' },
+        { key: 'E0504', name: 'Modelos de orientación e intervención educativa', moduleTitle: 'Módulo V', fileLink: 'Modelos de orientaci...' },
+    ],
+    6: [
+        { key: 'E0601', name: 'Cultura de género en educación', moduleTitle: 'Módulo VI', fileLink: 'Cultura de género e...' },
+        { key: 'E0602', name: 'Teoría curricular', moduleTitle: 'Módulo VI', fileLink: 'Teoría curricular.pdf' },
+        { key: 'E0603', name: 'Intervención psicopedagógica', moduleTitle: 'Módulo VI', fileLink: 'Intervención psicope...' },
+        { key: 'E0604', name: 'Gestión y administración educativa', moduleTitle: 'Módulo VI', fileLink: 'Gestión y administra...' },
+    ],
+    7: [
+        { key: 'E0701', name: 'Diseño y evaluación curricular', moduleTitle: 'Módulo VII', fileLink: 'Diseño y evaluación ...' },
+        { key: 'E0702', name: 'Proyectos de innovación educativa', moduleTitle: 'Módulo VII', fileLink: 'Proyectos de innova...' },
+        { key: 'E0703', name: 'Modelos y diseños instruccionales', moduleTitle: 'Módulo VII', fileLink: 'Modelos y diseños i...' },
+        { key: 'E0704', name: 'Procesos de las organizaciones educativas', moduleTitle: 'Módulo VII', fileLink: 'Procesos de las org...' },
+    ],
+    8: [
+        { key: 'E0801', name: 'Emprendimiento Educativo', moduleTitle: 'Módulo VIII', fileLink: 'Emprendimiento Ed...' },
+        { key: 'E0802', name: 'Dirección y liderazgo de las instituciones educativas', moduleTitle: 'Módulo VIII', fileLink: 'Dirección y liderazgo...' },
+        { key: 'E0803', name: 'Tecnología educativa aplicada', moduleTitle: 'Módulo VIII', fileLink: 'Tecnología educativ...' },
+        { key: 'E0804', name: 'Ética del profesional en educación', moduleTitle: 'Módulo VIII', fileLink: 'Ética del profesional ...' },
+    ],
+    9: [
+        { key: 'E0901', name: 'Modelos Pedagógicos', moduleTitle: 'Módulo IX', fileLink: 'Modelos Pedagógic...' },
+        { key: 'E0902', name: 'Taller de titulación', moduleTitle: 'Módulo IX', fileLink: 'Taller de titulación.pdf' },
+        { key: 'E0903', name: 'Diseño de Objetos virtuales de aprendizaje (OVA)', moduleTitle: 'Módulo IX', fileLink: 'Diseño de Objetos vi...' },
+        { key: 'E0904', name: 'Tutoría en ambientes virtuales', moduleTitle: 'Módulo IX', fileLink: 'Tutoría en ambiente...' },
+    ],
+};
+
 // --- NEW MOCK DATA FOR ADMIN SYSTEM ---
 
 export const MOCK_CAREERS: Career[] = [

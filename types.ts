@@ -98,6 +98,8 @@ export interface Subject {
   practiceHours: number;
   semester: number;
   careerId: number;
+  moduleTitle?: string;
+  fileLink?: string;
 }
 
 export interface Teacher {
