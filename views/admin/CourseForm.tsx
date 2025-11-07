@@ -68,7 +68,7 @@ const SubjectForm: React.FC<{ subject?: CurriculumSubject | null, onSave: (subje
 
 // --- CURRICULUM MANAGER MODULE ---
 export const CurriculumManager: React.FC = () => {
-    const [selectedCareerId, setSelectedCareerId] = useState<number>(4); // Default to Lic. en Ciencias Forenses
+    const [selectedCareerId, setSelectedCareerId] = useState<number>(3); // Default to Lic. en Tecnologías de la Información
     const [subjects, setSubjects] = useState<CurriculumSubject[]>([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingSubject, setEditingSubject] = useState<CurriculumSubject | null>(null);
