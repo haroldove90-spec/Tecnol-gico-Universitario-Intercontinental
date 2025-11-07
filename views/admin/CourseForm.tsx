@@ -1,7 +1,5 @@
-
-
-import React, { useState, useMemo } from 'react';
-import { MOCK_TEACHERS, MOCK_PERIODS, MOCK_FULL_CURRICULUM, MOCK_CAREERS } from '../../constants';
+import React, { useState, useMemo, useEffect } from 'react';
+import { MOCK_TEACHERS, MOCK_PERIODS, MOCK_CURRICULUMS, MOCK_CAREERS } from '../../constants';
 import { Teacher, SchoolPeriod } from '../../types';
 import { PlusCircleIcon, PencilIcon } from '../../components/icons';
 import Modal from '../../components/Modal';
@@ -70,17 +68,22 @@ const SubjectForm: React.FC<{ subject?: CurriculumSubject | null, onSave: (subje
 
 // --- CURRICULUM MANAGER MODULE ---
 export const CurriculumManager: React.FC = () => {
-    const initialSubjects = useMemo(() => Object.entries(MOCK_FULL_CURRICULUM).flatMap(([semester, subjectList]) => 
-        subjectList.map(s => ({
-          ...s,
-          id: `${semester}-${s.key}`,
-          semester: parseInt(semester),
-        }))
-    ), []);
-
-    const [subjects, setSubjects] = useState<CurriculumSubject[]>(initialSubjects);
+    const [selectedCareerId, setSelectedCareerId] = useState<number>(4); // Default to Lic. en Ciencias Forenses
+    const [subjects, setSubjects] = useState<CurriculumSubject[]>([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingSubject, setEditingSubject] = useState<CurriculumSubject | null>(null);
+
+    useEffect(() => {
+        const careerCurriculum = MOCK_CURRICULUMS[selectedCareerId] || {};
+        const initialSubjects = Object.entries(careerCurriculum).flatMap(([semester, subjectList]) => 
+            subjectList.map(s => ({
+              ...s,
+              id: `${semester}-${s.key}`,
+              semester: parseInt(semester),
+            }))
+        );
+        setSubjects(initialSubjects);
+    }, [selectedCareerId]);
 
     const groupedSubjects = useMemo(() => {
         return subjects.reduce((acc, subject) => {
@@ -112,65 +115,78 @@ export const CurriculumManager: React.FC = () => {
         handleCloseModal();
     };
     
-    const career = MOCK_CAREERS.find(c => c.id === 2); // Hardcoded for Lic. en Educación
+    const career = MOCK_CAREERS.find(c => c.id === selectedCareerId);
 
     return (
         <div>
             <Modal isOpen={isModalOpen} onClose={handleCloseModal} title={editingSubject ? "Editar Materia" : "Registrar Nueva Materia"} size="lg">
                 <SubjectForm subject={editingSubject} onSave={handleSaveSubject} onCancel={handleCloseModal} />
             </Modal>
-            <div className="flex justify-between items-center mb-6">
-                <div>
-                    <h2 className="text-2xl font-semibold text-gray-700">Plan de Estudios</h2>
-                    <p className="text-gray-500">{career?.name}</p>
+            <div className="flex flex-col md:flex-row justify-between md:items-center mb-6 gap-4">
+                 <div className="flex-grow">
+                    <label htmlFor="career-select" className="block text-sm font-medium text-gray-700 mb-1">Seleccionar Carrera</label>
+                     <select 
+                        id="career-select"
+                        value={selectedCareerId}
+                        onChange={(e) => setSelectedCareerId(Number(e.target.value))}
+                        className="w-full md:w-auto block px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary text-black text-xl font-semibold"
+                    >
+                        {MOCK_CAREERS.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+                    </select>
                 </div>
-                <button onClick={() => handleOpenModal()} className="flex items-center bg-[#FF7B10] text-white px-4 py-2 rounded-lg font-semibold hover:bg-[#E66A00] transition-colors">
+                <button onClick={() => handleOpenModal()} className="flex items-center self-end bg-[#FF7B10] text-white px-4 py-2 rounded-lg font-semibold hover:bg-[#E66A00] transition-colors">
                     <PlusCircleIcon className="w-5 h-5 mr-2" />
                     Registrar Materia
                 </button>
             </div>
 
             <div className="space-y-6">
-                {/* FIX: Replaced Object.entries with Object.keys to avoid type inference issues with mapped values. */}
-                {Object.keys(groupedSubjects).sort((a, b) => Number(a) - Number(b)).map(semester => {
-                    const subjectsInSemester = groupedSubjects[Number(semester)];
-                    return (
-                    <div key={semester} className="bg-white p-5 rounded-xl shadow-md">
-                        <h3 className="text-lg font-bold text-black border-b border-gray-200 pb-3 mb-3">
-                           Cuatrimestre {semester}
-                        </h3>
-                         <div className="overflow-x-auto">
-                            <table className="w-full whitespace-nowrap">
-                                <thead className="text-xs text-gray-500 uppercase">
-                                    <tr>
-                                        <th className="px-4 py-2 text-left">Número</th>
-                                        <th className="px-4 py-2 text-left">Materia</th>
-                                        <th className="px-4 py-2 text-left">Título</th>
-                                        <th className="px-4 py-2 text-left">Liga</th>
-                                        <th className="px-4 py-2 text-left">Acciones</th>
-                                    </tr>
-                                </thead>
-                                <tbody className="divide-y divide-gray-200">
-                                    {subjectsInSemester.map(subject => (
-                                        <tr key={subject.id} className="hover:bg-gray-50">
-                                            <td className="px-4 py-3 font-mono text-sm text-gray-600">{subject.key}</td>
-                                            <td className="px-4 py-3 font-medium text-black">{subject.name}</td>
-                                            <td className="px-4 py-3 text-sm text-gray-700">{subject.moduleTitle}</td>
-                                            <td className="px-4 py-3 text-sm text-blue-600 hover:underline cursor-pointer">{subject.fileLink}</td>
-                                            <td className="px-4 py-3">
-                                                <button onClick={() => handleOpenModal(subject)} className="text-blue-600 hover:text-blue-800 text-sm font-medium flex items-center">
-                                                    <PencilIcon className="w-4 h-4 mr-1" />
-                                                    Editar
-                                                </button>
-                                            </td>
+                {Object.keys(groupedSubjects).length > 0 ? (
+                    Object.keys(groupedSubjects).sort((a, b) => Number(a) - Number(b)).map(semester => {
+                        const subjectsInSemester = groupedSubjects[Number(semester)];
+                        return (
+                        <div key={semester} className="bg-white p-5 rounded-xl shadow-md">
+                            <h3 className="text-lg font-bold text-black border-b border-gray-200 pb-3 mb-3">
+                               Cuatrimestre {semester}
+                            </h3>
+                             <div className="overflow-x-auto">
+                                <table className="w-full whitespace-nowrap">
+                                    <thead className="text-xs text-gray-500 uppercase">
+                                        <tr>
+                                            <th className="px-4 py-2 text-left">Número</th>
+                                            <th className="px-4 py-2 text-left">Materia</th>
+                                            <th className="px-4 py-2 text-left">Título</th>
+                                            <th className="px-4 py-2 text-left">Liga</th>
+                                            <th className="px-4 py-2 text-left">Acciones</th>
                                         </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                         </div>
+                                    </thead>
+                                    <tbody className="divide-y divide-gray-200">
+                                        {subjectsInSemester.map(subject => (
+                                            <tr key={subject.id} className="hover:bg-gray-50">
+                                                <td className="px-4 py-3 font-mono text-sm text-gray-600">{subject.key}</td>
+                                                <td className="px-4 py-3 font-medium text-black">{subject.name}</td>
+                                                <td className="px-4 py-3 text-sm text-gray-700">{subject.moduleTitle}</td>
+                                                <td className="px-4 py-3 text-sm text-blue-600 hover:underline cursor-pointer">{subject.fileLink}</td>
+                                                <td className="px-4 py-3">
+                                                    <button onClick={() => handleOpenModal(subject)} className="text-blue-600 hover:text-blue-800 text-sm font-medium flex items-center">
+                                                        <PencilIcon className="w-4 h-4 mr-1" />
+                                                        Editar
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                             </div>
+                        </div>
+                        )
+                    })
+                ) : (
+                    <div className="bg-white p-8 rounded-xl shadow-md text-center">
+                        <h3 className="text-lg font-semibold text-gray-600">Sin Plan de Estudios</h3>
+                        <p className="text-gray-500 mt-2">No se han registrado materias para esta carrera. ¡Comienza agregando una!</p>
                     </div>
-                    )
-                })}
+                )}
             </div>
         </div>
     );

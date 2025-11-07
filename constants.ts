@@ -83,61 +83,128 @@ export const MOCK_CALENDAR_EVENTS: CalendarEvent[] = [
     { id: 2, title: 'Examen Final - Derecho', date: '2024-07-28', courseId: 1 },
 ];
 
-export const MOCK_FULL_CURRICULUM: Record<number, { key: string; name: string; moduleTitle: string; fileLink: string }[]> = {
-    1: [
-        { key: 'E0101', name: 'Filosofía de la educación', moduleTitle: 'Módulo I', fileLink: 'Filosofía de la educación.pdf' },
-        { key: 'E0102', name: 'Psicología del desarrollo', moduleTitle: 'Módulo I', fileLink: 'Psicología del desarrollo.pdf' },
-        { key: 'E0103', name: 'Comunicación Asertiva', moduleTitle: 'Módulo I', fileLink: 'Comunicación asertiva.pdf' },
-        { key: 'E0104', name: 'Historia Universal de la educación', moduleTitle: 'Módulo I', fileLink: 'Historia Universal de la educa' },
-    ],
-    2: [
-        { key: 'E0201', name: 'Sociología de la educación', moduleTitle: 'Módulo II', fileLink: 'Sociología de la educación.po' },
-        { key: 'E0202', name: 'Didáctica general', moduleTitle: 'Módulo II', fileLink: 'Didáctica general.pdf' },
-        { key: 'E0203', name: 'Estrategias de trabajo con grupos', moduleTitle: 'Módulo II', fileLink: 'Estrategias de trabajo con gru' },
-        { key: 'E0204', name: 'Psicología del aprendizaje', moduleTitle: 'Módulo II', fileLink: 'Psicología del aprendizaje.po' },
-    ],
-    3: [
-        { key: 'E0301', name: 'Política y legislación educativa', moduleTitle: 'Módulo III', fileLink: 'Política y legislación educativ' },
-        { key: 'E0302', name: 'Historia de la educación en México', moduleTitle: 'Módulo III', fileLink: 'Historia de la educación en M' },
-        { key: 'E0303', name: 'Diseño de estrategias y materiales didácticos', moduleTitle: 'Módulo III', fileLink: 'Diseño de estrategias y mate' },
-        { key: 'E0304', name: 'Programación didáctica', moduleTitle: 'Módulo III', fileLink: 'Programación didáctica.pdf' },
-    ],
-    4: [
-        { key: 'E0401', name: 'Investigación Educativa I', moduleTitle: 'Módulo IV', fileLink: 'Investigación Educativa I.pdf' },
-        { key: 'E0402', name: 'Estadística descriptiva aplicada', moduleTitle: 'Módulo IV', fileLink: 'Estadística descriptiva aplica' },
-        { key: 'E0403', name: 'Planeación y evaluación educativa', moduleTitle: 'Módulo IV', fileLink: 'Planeación y evaluación edud' },
-        { key: 'E0404', name: 'Inclusión educativa y diversidad en el aula', moduleTitle: 'Módulo IV', fileLink: 'Inclusión educativa y diversid' },
-    ],
-    5: [
-        { key: 'E0501', name: 'Investigación Educativa II', moduleTitle: 'Módulo V', fileLink: 'Investigación Educativa II.pdf' },
-        { key: 'E0502', name: 'Educación socioemocional', moduleTitle: 'Módulo V', fileLink: 'Educación socioemocional.po' },
-        { key: 'E0503', name: 'Educación y cultura para la Paz', moduleTitle: 'Módulo V', fileLink: 'Educación y cultura para la P' },
-        { key: 'E0504', name: 'Modelos de orientación e intervención educativa', moduleTitle: 'Módulo V', fileLink: 'Modelos de orientación e inte' },
-    ],
-    6: [
-        { key: 'E0601', name: 'Cultura de género en educación', moduleTitle: 'Módulo VI', fileLink: 'Cultura de género en educac' },
-        { key: 'E0602', name: 'Teoría curricular', moduleTitle: 'Módulo VI', fileLink: 'Teoría curricular.pdf' },
-        { key: 'E0603', name: 'Intervención psicopedagógica', moduleTitle: 'Módulo VI', fileLink: 'Intervención psicopedagógica' },
-        { key: 'E0604', name: 'Gestión y administración educativa', moduleTitle: 'Módulo VI', fileLink: 'Gestión y administración edu' },
-    ],
-    7: [
-        { key: 'E0701', name: 'Diseño y evaluación curricular', moduleTitle: 'Módulo VII', fileLink: 'Diseño y evaluación curricula' },
-        { key: 'E0702', name: 'Proyectos de innovación educativa', moduleTitle: 'Módulo VII', fileLink: 'Proyectos de innovación edu' },
-        { key: 'E0703', name: 'Modelos y diseños instruccionales', moduleTitle: 'Módulo VII', fileLink: 'Modelos y diseños instruccion' },
-        { key: 'E0704', name: 'Procesos de las organizaciones educativas', moduleTitle: 'Módulo VII', fileLink: 'Procesos de las organizacion' },
-    ],
-    8: [
-        { key: 'E0801', name: 'Emprendimiento Educativo', moduleTitle: 'Módulo VIII', fileLink: 'Emprendimiento Educativo.po' },
-        { key: 'E0802', name: 'Dirección y liderazgo de las instituciones educativas', moduleTitle: 'Módulo VIII', fileLink: 'Dirección y liderazgo de las in' },
-        { key: 'E0803', name: 'Tecnología educativa aplicada', moduleTitle: 'Módulo VIII', fileLink: 'Tecnología educativa aplicad' },
-        { key: 'E0804', name: 'Ética del profesional en educación', moduleTitle: 'Módulo VIII', fileLink: 'Ética del profesional en educa' },
-    ],
-    9: [
-        { key: 'E0901', name: 'Modelos Pedagógicos', moduleTitle: 'Módulo IX', fileLink: 'Modelos Pedagógicos.pdf' },
-        { key: 'E0902', name: 'Taller de titulación', moduleTitle: 'Módulo IX', fileLink: 'Taller de titulación.pdf' },
-        { key: 'E0903', name: 'Diseño de Objetos virtuales de aprendizaje (OVA)', moduleTitle: 'Módulo IX', fileLink: 'Diseño de Objetos virtuales d' },
-        { key: 'E0904', name: 'Tutoría en ambientes virtuales', moduleTitle: 'Módulo IX', fileLink: 'Tutoría en ambientes virtuale' },
-    ],
+export const MOCK_CURRICULUMS: Record<number, Record<number, { key: string; name: string; moduleTitle: string; fileLink: string }[]>> = {
+    2: { // Licenciatura en Educación
+        1: [
+            { key: 'E0101', name: 'Filosofía de la educación', moduleTitle: 'Módulo I', fileLink: 'Filosofía de la educación.pdf' },
+            { key: 'E0102', name: 'Psicología del desarrollo', moduleTitle: 'Módulo I', fileLink: 'Psicología del desarrollo.pdf' },
+            { key: 'E0103', name: 'Comunicación Asertiva', moduleTitle: 'Módulo I', fileLink: 'Comunicación asertiva.pdf' },
+            { key: 'E0104', name: 'Historia Universal de la educación', moduleTitle: 'Módulo I', fileLink: 'Historia Universal de la educa' },
+        ],
+        2: [
+            { key: 'E0201', name: 'Sociología de la educación', moduleTitle: 'Módulo II', fileLink: 'Sociología de la educación.po' },
+            { key: 'E0202', name: 'Didáctica general', moduleTitle: 'Módulo II', fileLink: 'Didáctica general.pdf' },
+            { key: 'E0203', name: 'Estrategias de trabajo con grupos', moduleTitle: 'Módulo II', fileLink: 'Estrategias de trabajo con gru' },
+            { key: 'E0204', name: 'Psicología del aprendizaje', moduleTitle: 'Módulo II', fileLink: 'Psicología del aprendizaje.po' },
+        ],
+        3: [
+            { key: 'E0301', name: 'Política y legislación educativa', moduleTitle: 'Módulo III', fileLink: 'Política y legislación educativ' },
+            { key: 'E0302', name: 'Historia de la educación en México', moduleTitle: 'Módulo III', fileLink: 'Historia de la educación en M' },
+            { key: 'E0303', name: 'Diseño de estrategias y materiales didácticos', moduleTitle: 'Módulo III', fileLink: 'Diseño de estrategias y mate' },
+            { key: 'E0304', name: 'Programación didáctica', moduleTitle: 'Módulo III', fileLink: 'Programación didáctica.pdf' },
+        ],
+        4: [
+            { key: 'E0401', name: 'Investigación Educativa I', moduleTitle: 'Módulo IV', fileLink: 'Investigación Educativa I.pdf' },
+            { key: 'E0402', name: 'Estadística descriptiva aplicada', moduleTitle: 'Módulo IV', fileLink: 'Estadística descriptiva aplica' },
+            { key: 'E0403', name: 'Planeación y evaluación educativa', moduleTitle: 'Módulo IV', fileLink: 'Planeación y evaluación edud' },
+            { key: 'E0404', name: 'Inclusión educativa y diversidad en el aula', moduleTitle: 'Módulo IV', fileLink: 'Inclusión educativa y diversid' },
+        ],
+        5: [
+            { key: 'E0501', name: 'Investigación Educativa II', moduleTitle: 'Módulo V', fileLink: 'Investigación Educativa II.pdf' },
+            { key: 'E0502', name: 'Educación socioemocional', moduleTitle: 'Módulo V', fileLink: 'Educación socioemocional.po' },
+            { key: 'E0503', name: 'Educación y cultura para la Paz', moduleTitle: 'Módulo V', fileLink: 'Educación y cultura para la P' },
+            { key: 'E0504', name: 'Modelos de orientación e intervención educativa', moduleTitle: 'Módulo V', fileLink: 'Modelos de orientación e inte' },
+        ],
+        6: [
+            { key: 'E0601', name: 'Cultura de género en educación', moduleTitle: 'Módulo VI', fileLink: 'Cultura de género en educac' },
+            { key: 'E0602', name: 'Teoría curricular', moduleTitle: 'Módulo VI', fileLink: 'Teoría curricular.pdf' },
+            { key: 'E0603', name: 'Intervención psicopedagógica', moduleTitle: 'Módulo VI', fileLink: 'Intervención psicopedagógica' },
+            { key: 'E0604', name: 'Gestión y administración educativa', moduleTitle: 'Módulo VI', fileLink: 'Gestión y administración edu' },
+        ],
+        7: [
+            { key: 'E0701', name: 'Diseño y evaluación curricular', moduleTitle: 'Módulo VII', fileLink: 'Diseño y evaluación curricula' },
+            { key: 'E0702', name: 'Proyectos de innovación educativa', moduleTitle: 'Módulo VII', fileLink: 'Proyectos de innovación edu' },
+            { key: 'E0703', name: 'Modelos y diseños instruccionales', moduleTitle: 'Módulo VII', fileLink: 'Modelos y diseños instruccion' },
+            { key: 'E0704', name: 'Procesos de las organizaciones educativas', moduleTitle: 'Módulo VII', fileLink: 'Procesos de las organizacion' },
+        ],
+        8: [
+            { key: 'E0801', name: 'Emprendimiento Educativo', moduleTitle: 'Módulo VIII', fileLink: 'Emprendimiento Educativo.po' },
+            { key: 'E0802', name: 'Dirección y liderazgo de las instituciones educativas', moduleTitle: 'Módulo VIII', fileLink: 'Dirección y liderazgo de las in' },
+            { key: 'E0803', name: 'Tecnología educativa aplicada', moduleTitle: 'Módulo VIII', fileLink: 'Tecnología educativa aplicad' },
+            { key: 'E0804', name: 'Ética del profesional en educación', moduleTitle: 'Módulo VIII', fileLink: 'Ética del profesional en educa' },
+        ],
+        9: [
+            { key: 'E0901', name: 'Modelos Pedagógicos', moduleTitle: 'Módulo IX', fileLink: 'Modelos Pedagógicos.pdf' },
+            { key: 'E0902', name: 'Taller de titulación', moduleTitle: 'Módulo IX', fileLink: 'Taller de titulación.pdf' },
+            { key: 'E0903', name: 'Diseño de Objetos virtuales de aprendizaje (OVA)', moduleTitle: 'Módulo IX', fileLink: 'Diseño de Objetos virtuales d' },
+            { key: 'E0904', name: 'Tutoría en ambientes virtuales', moduleTitle: 'Módulo IX', fileLink: 'Tutoría en ambientes virtuale' },
+        ],
+    },
+    4: { // Licenciatura en Ciencias Forenses
+        1: [
+            { key: 'LCFC101', name: 'Introducción a las Ciencias Forenses', moduleTitle: 'Primer Cuatrimestre', fileLink: 'INTRODUCCIÓN A LAS CIENCIAS FORENSES.pdf' },
+            { key: 'LCFC102', name: 'Introducción a la Criminología', moduleTitle: 'Primer Cuatrimestre', fileLink: 'INTRODUCCIÓN A LA CRIMINOLOGÍA.pdf' },
+            { key: 'LCFC103', name: 'Anatomía y Fisiología Humana', moduleTitle: 'Primer Cuatrimestre', fileLink: 'ANATOMÍA Y FISIOLOGÍA HUMANA.pdf' },
+            { key: 'LCFC104', name: 'Psicología General', moduleTitle: 'Primer Cuatrimestre', fileLink: 'PSICOLOGÍA GENERAL.pdf' },
+            { key: 'LCFC105', name: 'Técnicas de investigación y Metodología', moduleTitle: 'Primer Cuatrimestre', fileLink: 'TÉCNICAS DE INVESTIGACIÓN Y METODOLOGÍA.pdf' },
+        ],
+        2: [
+            { key: 'LCFC201', name: 'Química Forense', moduleTitle: 'Segundo Cuatrimestre', fileLink: 'QUÍMICA FORENSE.pdf' },
+            { key: 'LCFC202', name: 'Criminalística', moduleTitle: 'Segundo Cuatrimestre', fileLink: 'CRIMINALÍSTICA.pdf' },
+            { key: 'LCFC203', name: 'Derecho Penal', moduleTitle: 'Segundo Cuatrimestre', fileLink: 'DERECHO PENAL.pdf' },
+            { key: 'LCFC204', name: 'Estadística Aplicada a las Ciencias Forenses', moduleTitle: 'Segundo Cuatrimestre', fileLink: 'ESTADÍSTICA APLICADA A LAS CIENCIAS FORENSES.pdf' },
+            { key: 'LCFC205', name: 'Victimología', moduleTitle: 'Segundo Cuatrimestre', fileLink: 'VICTIMOLOGÍA.pdf' },
+        ],
+        3: [
+            { key: 'LCFC301', name: 'Genética Forense', moduleTitle: 'Tercer Cuatrimestre', fileLink: 'GENÉTICA FORENSE.pdf' },
+            { key: 'LCFC302', name: 'Toxicología Forense', moduleTitle: 'Tercer Cuatrimestre', fileLink: 'TOXICOLOGÍA FORENSE.pdf' },
+            { key: 'LCFC303', name: 'Derecho Procesal Penal', moduleTitle: 'Tercer Cuatrimestre', fileLink: 'DERECHO PROCESAL PENAL.pdf' },
+            { key: 'LCFC304', name: 'Psicología Criminal', moduleTitle: 'Tercer Cuatrimestre', fileLink: 'PSICOLOGÍA CRIMINAL.pdf' },
+            { key: 'LCFC305', name: 'Investigación de Campo y Recolección de Evidencia', moduleTitle: 'Tercer Cuatrimestre', fileLink: 'INVESTIGACIÓN DE CAMPO Y RECOLECCIÓN DE EVIDENCIA.pdf' },
+        ],
+        4: [
+            { key: 'LCFC401', name: 'Balística Forense', moduleTitle: 'Cuarto Cuatrimestre', fileLink: 'BALÍSTICA FORENSE.pdf' },
+            { key: 'LCFC402', name: 'Medicina Forense', moduleTitle: 'Cuarto Cuatrimestre', fileLink: 'MEDICINA FORENSE.pdf' },
+            { key: 'LCFC403', name: 'Derecho Fiscal para la Empresa', moduleTitle: 'Cuarto Cuatrimestre', fileLink: 'DERECHO FISCAL PARA LA EMPRESA.pdf' },
+            { key: 'LCFC404', name: 'Teorías Criminológicas', moduleTitle: 'Cuarto Cuatrimestre', fileLink: 'TEORÍAS CRIMINOLÓGICAS.pdf' },
+            { key: 'LCFC405', name: 'Entomología Forense', moduleTitle: 'Cuarto Cuatrimestre', fileLink: 'ENTOMOLOGÍA FORENSE.pdf' },
+        ],
+        5: [
+            { key: 'LCFC501', name: 'Documentoscopía y Grafoscopía', moduleTitle: 'Quinto Cuatrimestre', fileLink: 'DOCUMENTOSCOPÍA Y GRAFOSCOPIA.pdf' },
+            { key: 'LCFC502', name: 'Odontología Forense', moduleTitle: 'Quinto Cuatrimestre', fileLink: 'ODONTOLOGÍA FORENSE.pdf' },
+            { key: 'LCFC503', name: 'Derecho Constitucional', moduleTitle: 'Quinto Cuatrimestre', fileLink: 'DERECHO CONSTITUCIONAL.pdf' },
+            { key: 'LCFC504', name: 'Criminología Aplicada', moduleTitle: 'Quinto Cuatrimestre', fileLink: 'CRIMINOLOGÍA APLICADA.pdf' },
+            { key: 'LCFC505', name: 'Entrevista y Técnicas de Interrogatorio', moduleTitle: 'Quinto Cuatrimestre', fileLink: 'ENTREVISTA Y TÉCNICAS DE INTERROGATORIO.pdf' },
+        ],
+        6: [
+            { key: 'LCFC601', name: 'Fotografía Forense', moduleTitle: 'Sexto Cuatrimestre', fileLink: 'FOTOGRAFÍA FORENSE.pdf' },
+            { key: 'LCFC602', name: 'Química Analítica', moduleTitle: 'Sexto Cuatrimestre', fileLink: 'QUÍMICA ANALÍTICA.pdf' },
+            { key: 'LCFC603', name: 'Derecho Laboral y Penal Laboral', moduleTitle: 'Sexto Cuatrimestre', fileLink: 'DERECHO LABORAL Y PENAL LABORAL.pdf' },
+            { key: 'LCFC604', name: 'Política Criminal', moduleTitle: 'Sexto Cuatrimestre', fileLink: 'POLÍTICA CRIMINAL.pdf' },
+            { key: 'LCFC605', name: 'Investigación de Incendios y Explosiones', moduleTitle: 'Sexto Cuatrimestre', fileLink: 'INVESTIGACIÓN DE INCENDIOS Y EXPLOSIONES.pdf' },
+        ],
+        7: [
+            { key: 'LCFC701', name: 'Informática Forense', moduleTitle: 'Séptimo Cuatrimestre', fileLink: 'INFORMÁTICA FORENSE.pdf' },
+            { key: 'LCFC702', name: 'Antropología Forense', moduleTitle: 'Séptimo Cuatrimestre', fileLink: '' },
+            { key: 'LCFC703', name: 'Derecho Internacional Humanitario', moduleTitle: 'Séptimo Cuatrimestre', fileLink: 'DERECHO INTERNACIONAL HUMANITARIO.pdf' },
+            { key: 'LCFC704', name: 'Psicología Criminal', moduleTitle: 'Séptimo Cuatrimestre', fileLink: 'PSICOLOGÍA CRIMINAL.pdf' },
+            { key: 'LCFC705', name: 'Seminario de Investigación', moduleTitle: 'Séptimo Cuatrimestre', fileLink: 'SEMINARIO DE INVESTIGACIÓN.pdf' },
+        ],
+        8: [
+            { key: 'LCFC801', name: 'Psicología Forense', moduleTitle: 'Octavo Cuatrimestre', fileLink: 'PSICOLOGÍA FORENSE.pdf' },
+            { key: 'LCFC802', name: 'Derecho de la Familia y Menores', moduleTitle: 'Octavo Cuatrimestre', fileLink: 'DERECHO DE LA FAMILIA Y MENORES.pdf' },
+            { key: 'LCFC803', name: 'Ética y Profesionalismo en Ciencias Forenses', moduleTitle: 'Octavo Cuatrimestre', fileLink: 'ÉTICA Y PROFESIONALISMO EN CIENCIAS FORENSES.pdf' },
+            { key: 'LCFC804', name: 'Análisis de Casos Criminales', moduleTitle: 'Octavo Cuatrimestre', fileLink: 'ANÁLISIS DE CASOS CRIMINALES.pdf' },
+            { key: 'LCFC805', name: 'Derecho Penal Comparativo', moduleTitle: 'Octavo Cuatrimestre', fileLink: 'DERECHO PENAL COMPARATIVO.pdf' },
+        ],
+        9: [
+            { key: 'LCFC901', name: 'Seminario de Tesis', moduleTitle: 'Noveno Cuatrimestre', fileLink: 'SEMINARIO DE TESIS.pdf' },
+            { key: 'LCFC902', name: 'Psicología Forense Avanzada', moduleTitle: 'Noveno Cuatrimestre', fileLink: 'PSICOLOGÍA FORENSE AVANZADA.pdf' },
+            { key: 'LCFC903', name: 'Derecho Internacional y Crimen Transnacional', moduleTitle: 'Noveno Cuatrimestre', fileLink: 'DERECHO INTERNACIONAL Y CRIMEN TRANSNACIONAL.pdf' },
+            { key: 'LCFC904', name: 'Criminología Ambiental y Delitos Contra el Medio Ambiente', moduleTitle: 'Noveno Cuatrimestre', fileLink: 'CRIMINOLOGÍA AMBIENTAL Y DELITOS CONTRA EL MEDIO AMBIENTE.pdf' },
+            { key: 'LCFC905', name: 'Gestión de Casos Criminales y Consultoría Forense', moduleTitle: 'Noveno Cuatrimestre', fileLink: 'GESTIÓN DE CASOS CRIMINALES Y CONSULTORÍA FORENSE.pdf' },
+        ],
+    },
 };
 
 // --- NEW MOCK DATA FOR ADMIN SYSTEM ---
