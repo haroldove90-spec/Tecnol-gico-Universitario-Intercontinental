@@ -1,3 +1,4 @@
+
 import React, { useState, useMemo, useEffect } from 'react';
 import { MOCK_TEACHERS, MOCK_PERIODS, MOCK_CURRICULUMS, MOCK_CAREERS } from '../../constants';
 import { Teacher, SchoolPeriod } from '../../types';
@@ -68,7 +69,7 @@ const SubjectForm: React.FC<{ subject?: CurriculumSubject | null, onSave: (subje
 
 // --- CURRICULUM MANAGER MODULE ---
 export const CurriculumManager: React.FC = () => {
-    const [selectedCareerId, setSelectedCareerId] = useState<number>(3); // Default to Lic. en Tecnologías de la Información
+    const [selectedCareerId, setSelectedCareerId] = useState<number>(5); // Default to Lic. Administración y Dirección de Empresas
     const [subjects, setSubjects] = useState<CurriculumSubject[]>([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingSubject, setEditingSubject] = useState<CurriculumSubject | null>(null);

@@ -1,3 +1,4 @@
+
 import { User, Role, Course, LessonType, Submission, PrivateFile, CalendarEvent, StudentStatus, Career, Subject, Teacher, Group, Grade, SchoolPeriod, SystemUser, SystemRole } from './types';
 
 export const MOCK_COURSES: Course[] = [
@@ -218,6 +219,71 @@ export const MOCK_CURRICULUMS: Record<number, Record<number, { key: string; name
             { key: 'LTIND905', name: 'Liderazgo y Negociación', moduleTitle: 'Noveno Cuatrimestre', fileLink: 'LIDERAZGO Y NEGOCIACIÓN.pdf' },
         ],
     },
+    5: { // Lic. Administración y Dirección de Empresas
+        1: [
+            { key: 'LADE101', name: 'INTRODUCCIÓN A LA EMPRESA', moduleTitle: 'Primer Cuatrimestre', fileLink: 'INTRODUCCIÓN A LA EMPRESA.pdf' },
+            { key: 'LADE102', name: 'FUNDAMENTOS DE CONTABILIDAD', moduleTitle: 'Primer Cuatrimestre', fileLink: 'FUNDAMENTOS DE CONTABILIDAD.pdf' },
+            { key: 'LADE103', name: 'ADMINISTRACIÓN Y DIRECCIÓN DE EMPRESAS', moduleTitle: 'Primer Cuatrimestre', fileLink: 'ADMINISTRACIÓN Y DIRECCIÓN DE EMPRESAS.pdf' },
+            { key: 'LADE104', name: 'MATEMÁTICAS PARA NEGOCIOS', moduleTitle: 'Primer Cuatrimestre', fileLink: 'MATEMÁTICAS PARA NEGOCIOS.pdf' },
+            { key: 'LADE105', name: 'INTRODUCCIÓN A LA ECONOMÍA', moduleTitle: 'Primer Cuatrimestre', fileLink: 'INTRODUCCIÓN A LA ECONOMÍA.pdf' },
+        ],
+        2: [
+            { key: 'LADE201', name: 'DISEÑO ORGANIZACIONAL Y MODELOS DE NEGOCIO', moduleTitle: 'SEGUNDO CUATRIMESTRE', fileLink: 'DISEÑO ORGANIZACIONAL.pdf' },
+            { key: 'LADE202', name: 'CONTABILIDAD INTERMEDIA', moduleTitle: 'SEGUNDO CUATRIMESTRE', fileLink: 'CONTABILIDAD INTERMEDIA.pdf' },
+            { key: 'LADE203', name: 'MERCADOTECNIA FUNDAMENTAL', moduleTitle: 'SEGUNDO CUATRIMESTRE', fileLink: 'MERCADOTECNIA FUNDAMENTAL.pdf' },
+            { key: 'LADE204', name: 'ANÁLISIS DE DATOS I', moduleTitle: 'SEGUNDO CUATRIMESTRE', fileLink: 'ANÁLISIS DE DATOS I.pdf' },
+            { key: 'LADE205', name: 'ECONOMÍA EMPRESARIAL', moduleTitle: 'SEGUNDO CUATRIMESTRE', fileLink: 'ECONOMÍA EMPRESARIAL.pdf' },
+        ],
+        3: [
+            { key: 'LADE301', name: 'OPERACIONES Y LOGÍSTICA INTEGRAL', moduleTitle: 'TERCER CUATRIMESTRE', fileLink: 'OPERACIONES Y LOGÍSTICA.pdf' },
+            { key: 'LADE302', name: 'CONTABILIDAD GERENCIAL', moduleTitle: 'TERCER CUATRIMESTRE', fileLink: 'CONTABILIDAD GERENCIAL.pdf' },
+            { key: 'LADE303', name: 'ADMINISTRACIÓN Y DIRECCIÓN DE EMPRESAS II', moduleTitle: 'TERCER CUATRIMESTRE', fileLink: 'ADMINISTRACIÓN Y DIRECCIÓN II.pdf' },
+            { key: 'LADE304', name: 'ANÁLISIS DE DATOS II', moduleTitle: 'TERCER CUATRIMESTRE', fileLink: 'ANÁLISIS DE DATOS II.pdf' },
+            { key: 'LADE305', name: 'ECONOMÍA INTERNACIONAL', moduleTitle: 'TERCER CUATRIMESTRE', fileLink: 'ECONOMÍA INTERNACIONAL.pdf' },
+        ],
+        4: [
+            { key: 'LADE401', name: 'ANÁLISIS COMPETITIVO Y ESTRATEGIA', moduleTitle: 'CUARTO CUATRIMESTRE', fileLink: 'ANÁLISIS COMPETITIVO.pdf' },
+            { key: 'LADE402', name: 'INVESTIGACIÓN Y ESTRATEGÍAS DE MERCADO', moduleTitle: 'CUARTO CUATRIMESTRE', fileLink: 'INVESTIGACIÓN Y ESTRATEGIAS.pdf' },
+            { key: 'LADE403', name: 'DERECHO FISCAL PARA LA EMPRESA', moduleTitle: 'CUARTO CUATRIMESTRE', fileLink: 'DERECHO FISCAL PARA LA EMPRESA.pdf' },
+            { key: 'LADE404', name: 'ANÁLISIS DE ESTADOS FINANCIEROS', moduleTitle: 'CUARTO CUATRIMESTRE', fileLink: 'ANÁLISIS DE ESTADOS FINANCIEROS.pdf' },
+            { key: 'LADE405', name: 'ECONOMÍA MEXICANA', moduleTitle: 'CUARTO CUATRIMESTRE', fileLink: 'ECONOMÍA MEXICANA.pdf' },
+        ],
+        5: [
+            { key: 'LADE501', name: 'DIRECCIÓN DE CAPITAL HUMANO', moduleTitle: 'QUINTO CUATRIMESTRE', fileLink: 'DIRECCIÓN DE CAPITAL HUMANO.pdf' },
+            { key: 'LADE502', name: 'IDENTIFICACIÓN DE OPORTUNIDADES DE NEGOCIO', moduleTitle: 'QUINTO CUATRIMESTRE', fileLink: 'IDENTIFICACIÓN DE OPORTUNIDADES.pdf' },
+            { key: 'LADE503', name: 'DIRECCIÓN COMERCIAL', moduleTitle: 'QUINTO CUATRIMESTRE', fileLink: 'DIRECCIÓN COMERCIAL.pdf' },
+            { key: 'LADE504', name: 'MATEMÁTICAS FINANCIERAS', moduleTitle: 'QUINTO CUATRIMESTRE', fileLink: 'MATEMÁTICAS FINANCIERAS.pdf' },
+            { key: 'LADE505', name: 'INVESTIGACIÓN DE OPERACIONES', moduleTitle: 'QUINTO CUATRIMESTRE', fileLink: 'INVESTIGACIÓN DE OPERACIONES.pdf' },
+        ],
+        6: [
+            { key: 'LADE601', name: 'COMPORTAMIENTO ORGANIZACIONAL', moduleTitle: 'SEXTO CUATRIMESTRE', fileLink: 'COMPORTAMIENTO ORGANIZACIONAL.pdf' },
+            { key: 'LADE602', name: 'MERCADOTECNIA ESTRATÉGICA', moduleTitle: 'SEXTO CUATRIMESTRE', fileLink: 'MERCADOTECNIA ESTRATÉGICA.pdf' },
+            { key: 'LADE603', name: 'DERECHO LABORAL', moduleTitle: 'SEXTO CUATRIMESTRE', fileLink: 'DERECHO LABORAL.pdf' },
+            { key: 'LADE604', name: 'ADMINISTRACIÓN FINANCIERA', moduleTitle: 'SEXTO CUATRIMESTRE', fileLink: 'ADMINISTRACIÓN FINANCIERA.pdf' },
+            { key: 'LADE605', name: 'CALCULO PARA NEGOCIOS', moduleTitle: 'SEXTO CUATRIMESTRE', fileLink: 'CALCULO PARA NEGOCIOS.pdf' },
+        ],
+        7: [
+            { key: 'LADE701', name: 'CONSULTORÍA EMPRESARIAL', moduleTitle: 'SEPTIMO CUATRIMESTRE', fileLink: 'CONSULTORÍA EMPRESARIAL.pdf' },
+            { key: 'LADE702', name: 'PROYECTO INTEGRADOR DE DIRECCIÓN DE EMPRESAS I', moduleTitle: 'SEPTIMO CUATRIMESTRE', fileLink: 'PROYECTO INTEGRADOR I.pdf' },
+            { key: 'LADE703', name: 'EVALUACIÓN DE PROYECTOS DE INVERSIÓN', moduleTitle: 'SEPTIMO CUATRIMESTRE', fileLink: 'EVALUACIÓN DE PROYECTOS.pdf' },
+            { key: 'LADE704', name: 'TECNOLOGÍAS DE LA INFORMACIÓN', moduleTitle: 'SEPTIMO CUATRIMESTRE', fileLink: 'TECNOLOGÍAS DE LA INFORMACIÓN.pdf' },
+            { key: 'LADE705', name: 'DERECHO Y EMPRESA', moduleTitle: 'SEPTIMO CUATRIMESTRE', fileLink: 'DERECHO Y EMPRESA.pdf' },
+        ],
+        8: [
+            { key: 'LADE801', name: 'GOBIERNO CORPORATIVO', moduleTitle: 'OCTAVO CUATRIMESTRE', fileLink: 'GOBIERNO CORPORATIVO.pdf' },
+            { key: 'LADE802', name: 'PROYECTO INTEGRADOR DE DIRECCIÓN DE EMPRESAS II', moduleTitle: 'OCTAVO CUATRIMESTRE', fileLink: 'PROYECTO INTEGRADOR II.pdf' },
+            { key: 'LADE803', name: 'DIRECCIÓN ESTRATÉGICA', moduleTitle: 'OCTAVO CUATRIMESTRE', fileLink: 'DIRECCIÓN ESTRATÉGICA.pdf' },
+            { key: 'LADE804', name: 'PLANEACIÓN FINANCIERA', moduleTitle: 'OCTAVO CUATRIMESTRE', fileLink: 'PLANEACIÓN FINANCIERA.pdf' },
+            { key: 'LADE805', name: 'INTELIGENCIA DE NEGOCIOS', moduleTitle: 'OCTAVO CUATRIMESTRE', fileLink: 'INTELIGENCIA DE NEGOCIOS.pdf' },
+        ],
+        9: [
+            { key: 'LADE901', name: 'GESTIÓN DE PROYECTOS', moduleTitle: 'NOVENO CUATRIMESTRE', fileLink: 'GESTIÓN DE PROYECTOS.pdf' },
+            { key: 'LADE902', name: 'COMUNICACIÓN INTEGRAL DE MERCADOTECNIA', moduleTitle: 'NOVENO CUATRIMESTRE', fileLink: 'COMUNICACIÓN INTEGRAL.pdf' },
+            { key: 'LADE903', name: 'ESTRATEGIAS PARA EL LANZAMIENTO DE NUEVOS NEGOCIOS', moduleTitle: 'NOVENO CUATRIMESTRE', fileLink: 'ESTRATEGIAS PARA EL LANZAMIENTO.pdf' },
+            { key: 'LADE904', name: 'DIRECCIÓN COMERCIAL', moduleTitle: 'NOVENO CUATRIMESTRE', fileLink: 'DIRECCIÓN COMERCIAL.pdf' },
+            { key: 'LADE905', name: 'FINANZAS CORPORATIVAS', moduleTitle: 'NOVENO CUATRIMESTRE', fileLink: 'FINANZAS CORPORATIVAS.pdf' },
+        ],
+    },
 };
 
 export const MOCK_CAREERS: Career[] = [
@@ -225,6 +291,7 @@ export const MOCK_CAREERS: Career[] = [
     { id: 2, name: 'Licenciatura en Educación', planCode: 'LE-2024', totalCredits: 350 },
     { id: 3, name: 'Licenciatura en Tecnologías de la Información', planCode: 'LTI-2024', totalCredits: 380 },
     { id: 4, name: 'Licenciatura en Ciencias Forenses', planCode: 'LCF-2024', totalCredits: 370 },
+    { id: 5, name: 'Lic. Administración y Dirección de Empresas', planCode: 'LADE-2024', totalCredits: 375 },
 ];
 
 export const MOCK_SUBJECTS: Subject[] = [
