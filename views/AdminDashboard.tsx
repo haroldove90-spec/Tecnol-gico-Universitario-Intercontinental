@@ -9,7 +9,7 @@ import { ReportsModule, SecurityModule } from './admin/DashboardHome';
 import { GroupsModule } from './admin/CoursesList';
 import { StudentsModule, KardexModule } from './admin/StudentsList';
 import { GradesModule, ReportCardsModule } from './admin/SubmissionsList';
-import { TeachersModule, PeriodsModule } from './admin/CourseForm';
+import { TeachersModule, PeriodsModule, CurriculumManager } from './admin/CourseForm';
 
 
 interface AdminDashboardProps {
@@ -23,6 +23,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
 
   const viewTitles: { [key: string]: string } = {
     students: 'Módulo de Alumnos',
+    curriculum: 'Gestión de Carreras y Materias',
     teachers: 'Módulo de Docentes',
     groups: 'Módulo de Grupos',
     grades: 'Módulo de Calificaciones',
@@ -47,6 +48,8 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
     switch (activeView) {
       case 'students':
         return <StudentsModule />;
+      case 'curriculum':
+        return <CurriculumManager />;
       case 'kardex':
         return <KardexModule />;
       case 'groups':

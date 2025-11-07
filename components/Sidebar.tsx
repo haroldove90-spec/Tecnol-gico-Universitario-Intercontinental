@@ -1,6 +1,6 @@
 
 import React, { ReactNode } from 'react';
-import { BookOpenIcon, UsersIcon, DocumentCheckIcon, ArrowLeftOnRectangleIcon, CalendarDaysIcon, ChartBarIcon, BriefcaseIcon, ViewGridIcon, IdentificationIcon, ShieldCheckIcon, DocumentTextIcon } from './icons';
+import { BookOpenIcon, UsersIcon, DocumentCheckIcon, ArrowLeftOnRectangleIcon, CalendarDaysIcon, ChartBarIcon, BriefcaseIcon, ViewGridIcon, IdentificationIcon, ShieldCheckIcon, DocumentTextIcon, GraduationCapIcon } from './icons';
 
 interface NavLinkProps {
   icon: ReactNode;
@@ -35,6 +35,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeView, setActiveView, onLogout, 
 
   const adminLinks = [
     { id: 'students', label: 'Alumnos', icon: <UsersIcon className="w-5 h-5" /> },
+    { id: 'curriculum', label: 'Carreras y Materias', icon: <GraduationCapIcon className="w-5 h-5" /> },
     { id: 'teachers', label: 'Docentes', icon: <BriefcaseIcon className="w-5 h-5" /> },
     { id: 'groups', label: 'Grupos', icon: <ViewGridIcon className="w-5 h-5" /> },
     { id: 'grades', label: 'Calificaciones', icon: <DocumentCheckIcon className="w-5 h-5" /> },
