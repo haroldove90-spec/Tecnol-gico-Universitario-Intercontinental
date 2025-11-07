@@ -6,7 +6,7 @@ import Header from '../components/Header';
 
 // Due to file constraints, modules are imported from repurposed files.
 import { ReportsModule, SecurityModule } from './admin/DashboardHome';
-import { CareersModule, GroupsModule } from './admin/CoursesList';
+import { GroupsModule } from './admin/CoursesList';
 import { StudentsModule, KardexModule } from './admin/StudentsList';
 import { GradesModule, ReportCardsModule } from './admin/SubmissionsList';
 import { TeachersModule, PeriodsModule } from './admin/CourseForm';
@@ -23,7 +23,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
 
   const viewTitles: { [key: string]: string } = {
     students: 'Módulo de Alumnos',
-    careers: 'Módulo de Carreras y Materias',
     teachers: 'Módulo de Docentes',
     groups: 'Módulo de Grupos',
     grades: 'Módulo de Calificaciones',
@@ -50,8 +49,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
         return <StudentsModule />;
       case 'kardex':
         return <KardexModule />;
-      case 'careers':
-        return <CareersModule />;
       case 'groups':
         return <GroupsModule />;
       case 'grades':
